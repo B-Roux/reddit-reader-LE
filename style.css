@@ -1,0 +1,16 @@
+.post-container {
+    margin: 1rem 0;
+}
+
+.post-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.post-subreddit::before {
+    content: "r/";
+}
+
+.post-author::before {
+    content: "u/";
+}
