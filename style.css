@@ -1,18 +1,45 @@
+:root {
+    --thumb-size: 100px;
+}
+
 .post-container {
     margin: 1rem 0;
     padding-bottom: 1rem;
     border-bottom: 1px solid black;
 }
 
+.post-thumbnail {
+    position: relative;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    background-color: black;
+}
+.post-thumbnail img {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.post-thumbnail:empty {
+    background-color: gray;
+}
+
 .post-title {
     font-size: 1.2rem;
     font-weight: bold;
 }
-
-.post-subreddit::before {
-    content: "r/";
+.post-title.sticky-post {
+    color: green;
 }
 
-.post-author::before {
-    content: "u/";
+.post-nsfw-tag {
+    color: red;
+}
+
+.post-spoiler-tag {
+    color: aqua;
 }

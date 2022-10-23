@@ -1,5 +1,5 @@
 makeSubredditPage(
-    "https://www.reddit.com/r/CombatFootage/.json",
+    "https://www.reddit.com/r/pics/.json",
     document.querySelector("#destination")
 );
 
@@ -21,30 +21,29 @@ function makePostNode(post) {
     score.appendChild(document.createTextNode(post.data.score.toLocaleString()));
     cont.appendChild(score);
 
-    if (post.data.thumbnail == "self") {
-        let thumbnail = document.createElement("div");
-        thumbnail.setAttribute("class", "post-thumbnail thumbnail-self");
-        thumbnail.appendChild(document.createTextNode("self"));
-        cont.append(thumbnail);
-    } else if (post.data.thumbnail == "spoiler") {
-        let thumbnail = document.createElement("div");
-        thumbnail.setAttribute("class", "post-thumbnail thumbnail-spoiler");
-        thumbnail.appendChild(document.createTextNode("spoiler"));
-        cont.append(thumbnail);
-    } else if (post.data.thumbnail == "nsfw") {
-        let thumbnail = document.createElement("div");
-        thumbnail.setAttribute("class", "post-thumbnail thumbnail-nsfw");
-        thumbnail.appendChild(document.createTextNode("nsfw"));
-        cont.append(thumbnail);
+    if (
+        post.data.thumbnail == "self"
+        || post.data.thumbnail == "spoiler"
+        || post.data.thumbnail == "nsfw"
+    ) {
+        let thumbnailContainer = document.createElement("div");
+        thumbnailContainer.setAttribute("class", "post-thumbnail");
+        cont.appendChild(thumbnailContainer);
     } else {
+        let thumbnailContainer = document.createElement("div");
+        thumbnailContainer.setAttribute("class", "post-thumbnail");
         let thumbnail = document.createElement("img");
-        thumbnail.setAttribute("class", "post-thumbnail thumbnail-img");
         thumbnail.setAttribute("src", post.data.thumbnail);
-        cont.append(thumbnail);
+        thumbnailContainer.appendChild(thumbnail);
+        cont.appendChild(thumbnailContainer);
     }
 
     let title = document.createElement("div");
-    title.setAttribute("class", "post-title");
+    if (post.data.stickied) {
+        title.setAttribute("class", "post-title sticky-post");
+    } else {
+        title.setAttribute("class", "post-title");
+    }
     title.appendChild(document.createTextNode(post.data.title));
     cont.appendChild(title);
 
@@ -56,12 +55,26 @@ function makePostNode(post) {
     author.setAttribute("href", redditURL + "u/" + post.data.author);
     author.appendChild(document.createTextNode(post.data.author));
     byline.appendChild(author);
-    byline.appendChild(document.createTextNode(" to "))
+    byline.appendChild(document.createTextNode(" to "));
     let subreddit = document.createElement("a");
     subreddit.setAttribute("class", "post-subreddit");
     subreddit.setAttribute("href", redditURL + "r/" + post.data.subreddit);
     subreddit.appendChild(document.createTextNode(post.data.subreddit));
     byline.appendChild(subreddit);
+    if (post.data.over_18) {
+        let nsfwTag = document.createElement("span");
+        nsfwTag.setAttribute("class", "post-nsfw-tag");
+        nsfwTag.appendChild(document.createTextNode("nsfw"));
+        byline.appendChild(document.createTextNode(" "));
+        byline.appendChild(nsfwTag);
+    }
+    if (post.data.spoiler) {
+        let spoilerTag = document.createElement("span");
+        spoilerTag.setAttribute("class", "post-spoiler-tag");
+        spoilerTag.appendChild(document.createTextNode("spoiler"));
+        byline.appendChild(document.createTextNode(" "));
+        byline.appendChild(spoilerTag);
+    }
     cont.appendChild(byline);
 
     let actions = document.createElement("div");
