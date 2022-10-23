@@ -1,5 +1,5 @@
 makeSubredditPage(
-    "https://www.reddit.com/r/pics/.json",
+    "https://www.reddit.com/r/CombatFootage/.json",
     document.querySelector("#destination")
 );
 
@@ -20,6 +20,28 @@ function makePostNode(post) {
     score.setAttribute("class", "post-score");
     score.appendChild(document.createTextNode(post.data.score.toLocaleString()));
     cont.appendChild(score);
+
+    if (post.data.thumbnail == "self") {
+        let thumbnail = document.createElement("div");
+        thumbnail.setAttribute("class", "post-thumbnail thumbnail-self");
+        thumbnail.appendChild(document.createTextNode("self"));
+        cont.append(thumbnail);
+    } else if (post.data.thumbnail == "spoiler") {
+        let thumbnail = document.createElement("div");
+        thumbnail.setAttribute("class", "post-thumbnail thumbnail-spoiler");
+        thumbnail.appendChild(document.createTextNode("spoiler"));
+        cont.append(thumbnail);
+    } else if (post.data.thumbnail == "nsfw") {
+        let thumbnail = document.createElement("div");
+        thumbnail.setAttribute("class", "post-thumbnail thumbnail-nsfw");
+        thumbnail.appendChild(document.createTextNode("nsfw"));
+        cont.append(thumbnail);
+    } else {
+        let thumbnail = document.createElement("img");
+        thumbnail.setAttribute("class", "post-thumbnail thumbnail-img");
+        thumbnail.setAttribute("src", post.data.thumbnail);
+        cont.append(thumbnail);
+    }
 
     let title = document.createElement("div");
     title.setAttribute("class", "post-title");
