@@ -91,7 +91,9 @@ function makePostNode(post) {
         left.appendChild(thumbnailContainer);
     }
 
-    let title = document.createElement("div");
+    let title = document.createElement("a");
+    title.setAttribute("href", post.data.url);
+    title.setAttribute("target", "_blank");
     if (post.data.stickied) {
         title.setAttribute("class", "post-title sticky-post");
     } else {
@@ -135,20 +137,19 @@ function makePostNode(post) {
     }
     right.appendChild(byline);
 
-    let actions = document.createElement("div");
-    actions.setAttribute("class", "post-actions");
-    let openPost = document.createElement("a");
-    openPost.appendChild(document.createTextNode("comments (" + post.data.num_comments + ")"));
-    openPost.setAttribute("href", redditURL + post.data.permalink);
-    openPost.setAttribute("target", "_blank");
-    actions.appendChild(openPost);
-    actions.appendChild(document.createTextNode(" "));
-    let openOnReddit = document.createElement("a");
-    openOnReddit.appendChild(document.createTextNode("open on reddit"));
-    openOnReddit.setAttribute("href", redditURL + post.data.permalink);
-    openOnReddit.setAttribute("target", "_blank");
-    actions.appendChild(openOnReddit);
-    right.appendChild(actions);
+    let openLink = document.createElement("a");
+    openLink.appendChild(document.createTextNode("reddit"));
+    openLink.setAttribute("href", redditURL + post.data.permalink);
+    openLink.setAttribute("target", "_blank");
+    openLink.setAttribute("class", "post-links");
+    right.appendChild(openLink);
+
+    let openComments = document.createElement("a");
+    openComments.appendChild(document.createTextNode("comments (" + post.data.num_comments + ")"));
+    openComments.setAttribute("href", redditURL + post.data.permalink);
+    openComments.setAttribute("target", "_blank");
+    openComments.setAttribute("class", "post-links");
+    right.appendChild(openComments);
 
     container.appendChild(left);
     container.appendChild(right);

@@ -32,9 +32,11 @@
     --foreground-color: var(--gb-white);
     --background-color: var(--gb-black);
     --sticky-color: var(--gb-green);
+    --sticky-hover-color: var(--gb-green-bright);
     --nsfw-color: var(--gb-red);
-    --spoiler-color: var(--gb-gray);
+    --spoiler-color: var(--gb-aqua);
     --title-color: var(--gb-orange);
+    --title-hover-color: var(--gb-orange-bright);
     --link-color: var(--gb-blue);
     --link-hover-color: var(--gb-blue-bright);
 
@@ -120,17 +122,29 @@ a:hover {
     background-color: var(--background-color);
 }
 
-.post-title {
+.post-title, .post-title:visited {
+    display: block;
+    max-width: 95%;
     font-size: 1.2rem;
     font-weight: bold;
     color: var(--title-color);
 }
-.post-title.sticky-post {
+.post-title:hover {
+    color: var(--title-hover-color);
+    text-decoration: underline;
+}
+.post-title.sticky-post, .post-title.sticky-post:visited {
     color: var(--sticky-color);
 }
+.post-title.sticky-post:hover {
+    color: var(--sticky-hover-color);
+    text-decoration: underline;
+}
+
 
 .post-byline {
     font-size: 0.8rem;
+    margin: 0.2rem 0;
 }
 .post-author::before {
     content: "u/";
@@ -147,6 +161,8 @@ a:hover {
     font-weight: bold;
 }
 
-.post-actions a {
+.post-links {
+    display: inline-block;
+    margin-right: 1.2rem;
     font-weight: bold;
 }
