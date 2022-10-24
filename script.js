@@ -1,54 +1,125 @@
+const URLParams = new URLSearchParams(window.location.search);
+
+var subredditToFetch = null;
+var sortToFetch = null;
+var timeToFetch = null;
+
+var timeSelectorRadio = null;
+var generatorDestination = null;
+
 // Main
+
 window.addEventListener('DOMContentLoaded', (event) => {
-    getNewPostPage();
+    // Bind UI elements
+    timeSelectorRadio = document.querySelector("#from-time-radio");
+    generatorDestination = document.querySelector("#generator-destination");
+
+    // Initialize globals
+    subredditToFetch = getURLParam("subreddit", "all");
+    sortToFetch = getURLParam("sort", "hot");
+    timeToFetch = getURLParam("time", "all");
+
+    // Initialize UI
+    document.querySelector("#subreddit-name").value = subredditToFetch;
+    document.querySelectorAll('.sort-selector').forEach((radioButton) => {
+        radioButton.checked = radioButton.value == sortToFetch;
+    });
+    document.querySelectorAll('.time-selector').forEach((radioButton) => {
+        radioButton.checked = radioButton.value == timeToFetch;
+    });
+    if (sortToFetch == "controversial" || sortToFetch == "top") {
+        timeSelectorRadio.style = "display: initial;";
+    } else {
+        timeSelectorRadio.style = "display: none;";
+    }
+
+    // Load the requested information
+    loadNewPage();
 });
 
 // UI controls
-subredditToFetch = "all";
+
 function changeSubreddit(value) {
     subredditToFetch = value;
 }
-
-sortToFetch = "hot";
 function changeSort(value) {
     if (value == "controversial" || value == "top") {
-        document.querySelector("#from-time-radio").style = "display: initial;";
+        timeSelectorRadio.style = "display: initial;";
     } else {
-        document.querySelector("#from-time-radio").style = "display: none;";
+        timeSelectorRadio.style = "display: none;";
     }
     sortToFetch = value;
 }
-
-timeToFetch = "all";
 function changeTime(value) {
     timeToFetch = value;
 }
 
-function makeRedditURL() {
-    let url = "https://api.reddit.com/r/" + subredditToFetch + "/" + sortToFetch + "/.json";
-    if (sortToFetch == "controversial" || sortToFetch == "top") {
-        url += "?t=" + timeToFetch;
+function navigateToQueriedPage() {
+    window.location.href = makeReaderSubredditURL(
+        subredditToFetch,
+        sortToFetch,
+        timeToFetch,
+        null
+    );
+}
+
+// Functionality
+
+function loadNewPage() {
+    let url = makeRedditURL(
+        getURLParam("subreddit", "all"),
+        getURLParam("sort", "hot"),
+        getURLParam("time", "all"),
+        getURLParam("after", null)
+    );
+    makeSubredditPage(url, generatorDestination);
+}
+
+function makeRedditURL(subreddit, sort, time, after=null) {
+    let url = "https://api.reddit.com/r/" + subreddit + "/" + sort;
+    if (sort == "controversial" || sort == "top") {
+        url += "?t=" + time;
+        if (after != null) {
+            url += "&after=" + after;
+        }
+    } else {
+        if (after != null) {
+            url += "?after=" + after;
+        }
     }
     return url;
 }
 
-function getNewPostPage() {
-    url = makeRedditURL();
+function makeReaderSubredditURL(subreddit, sort="hot", time="all", after=null) {
+    let url = "file:///C:/Users/baren/source/repos/birddit/index.html" //TODO
+    + "?subreddit=" + subreddit
+    + "&sort=" + sort;
+    if (sort == "controversial" || sort == "top") {
+        url += "&time=" + time;
+    }
+    if (after != null) {
+        url += "&after=" + after;
+    }
     console.log(url);
-    makeSubredditPage(
-        url,
-        document.querySelector(".post-list")
-    );
+    return url;
+}
+
+function getURLParam(name, default_=null) {
+    if (URLParams.has(name)) {
+        return URLParams.get(name);
+    } else {
+        return default_;
+    }
 }
 
 // Reddit API interface
 
-
 function makeSubredditPage(url, destination) {
     fetchRedditPage(url)
         .then(function (data) {
-            destination.replaceChildren([]);
-            data.data.children.forEach(child => { destination.appendChild(makePostNode(child)); });
+            data.data.children.forEach(child => {
+                destination.appendChild(makePostNode(child.data)); 
+            });
         })
         .catch(function (err) {
             alert(err);
@@ -69,37 +140,40 @@ function makePostNode(post) {
 
     let score = document.createElement("div");
     score.setAttribute("class", "post-score");
-    score.appendChild(document.createTextNode(post.data.score.toLocaleString()));
+    score.appendChild(document.createTextNode(post.score.toLocaleString()));
     left.appendChild(score);
 
     if (
-        post.data.thumbnail == "self"
-        || post.data.thumbnail == "spoiler"
-        || post.data.thumbnail == "nsfw"
-        || post.data.thumbnail == "default"
-        || post.data.thumbnail == ""
+        post.thumbnail == "self"
+        || post.thumbnail == "spoiler"
+        || post.thumbnail == "nsfw"
+        || post.thumbnail == "default"
+        || post.thumbnail == ""
     ) {
         let thumbnailContainer = document.createElement("div");
-        thumbnailContainer.setAttribute("class", "post-no-thumbnail no-thumbnail-type-" + post.data.thumbnail);
+        thumbnailContainer.setAttribute(
+            "class", 
+            "post-no-thumbnail no-thumbnail-type-" + post.thumbnail
+        );
         left.appendChild(thumbnailContainer);
     } else {
         let thumbnailContainer = document.createElement("div");
         thumbnailContainer.setAttribute("class", "post-thumbnail");
         let thumbnail = document.createElement("img");
-        thumbnail.setAttribute("src", post.data.thumbnail);
+        thumbnail.setAttribute("src", post.thumbnail);
         thumbnailContainer.appendChild(thumbnail);
         left.appendChild(thumbnailContainer);
     }
 
     let title = document.createElement("a");
-    title.setAttribute("href", post.data.url);
+    title.setAttribute("href", post.url);
     title.setAttribute("target", "_blank");
-    if (post.data.stickied) {
+    if (post.stickied) {
         title.setAttribute("class", "post-title sticky-post");
     } else {
         title.setAttribute("class", "post-title");
     }
-    title.appendChild(document.createTextNode(post.data.title));
+    title.appendChild(document.createTextNode(post.title));
     right.appendChild(title);
 
     let byline = document.createElement("div");
@@ -107,28 +181,28 @@ function makePostNode(post) {
     byline.appendChild(document.createTextNode("submitted by "));
     let author = document.createElement("a");
     author.setAttribute("class", "post-author");
-    author.setAttribute("href", redditURL + "u/" + post.data.author);
-    author.appendChild(document.createTextNode(post.data.author));
+    author.setAttribute("href", redditURL + "u/" + post.author);
+    author.appendChild(document.createTextNode(post.author));
     byline.appendChild(author);
     byline.appendChild(document.createTextNode(" to "));
     let subreddit = document.createElement("a");
     subreddit.setAttribute("class", "post-subreddit");
-    subreddit.setAttribute("href", redditURL + "r/" + post.data.subreddit);
-    subreddit.appendChild(document.createTextNode(post.data.subreddit));
+    subreddit.setAttribute("href", makeReaderSubredditURL(post.subreddit));
+    subreddit.appendChild(document.createTextNode(post.subreddit));
     byline.appendChild(subreddit);
-    let millisSincePosted = Math.round(Date.now() - post.data.created*1000);
+    let millisSincePosted = Math.round(Date.now() - post.created*1000);
     byline.appendChild(document.createTextNode(" " + formatDuration(millisSincePosted) + " ago"));
-    if (post.data.edited) {
+    if (post.edited) {
         byline.appendChild(document.createTextNode("*"));
     }
-    if (post.data.over_18) {
+    if (post.over_18) {
         let nsfwTag = document.createElement("span");
         nsfwTag.setAttribute("class", "post-nsfw-tag");
         nsfwTag.appendChild(document.createTextNode("(nsfw)"));
         byline.appendChild(document.createTextNode(" "));
         byline.appendChild(nsfwTag);
     }
-    if (post.data.spoiler) {
+    if (post.spoiler) {
         let spoilerTag = document.createElement("span");
         spoilerTag.setAttribute("class", "post-spoiler-tag");
         spoilerTag.appendChild(document.createTextNode("(spoiler)"));
@@ -139,14 +213,14 @@ function makePostNode(post) {
 
     let openLink = document.createElement("a");
     openLink.appendChild(document.createTextNode("reddit"));
-    openLink.setAttribute("href", redditURL + post.data.permalink);
+    openLink.setAttribute("href", redditURL + post.permalink);
     openLink.setAttribute("target", "_blank");
     openLink.setAttribute("class", "post-links");
     right.appendChild(openLink);
 
     let openComments = document.createElement("a");
-    openComments.appendChild(document.createTextNode("comments (" + post.data.num_comments + ")"));
-    openComments.setAttribute("href", redditURL + post.data.permalink);
+    openComments.appendChild(document.createTextNode("comments (" + post.num_comments + ")"));
+    openComments.setAttribute("href", redditURL + post.permalink);
     openComments.setAttribute("target", "_blank");
     openComments.setAttribute("class", "post-links");
     right.appendChild(openComments);
