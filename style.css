@@ -1,18 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;700&display=swap');
+
 :root {
+    /* Background/Foreground Colors */
+    --gb-black:   #282828;
+    --gb-white:  #ebdbb2;
+    /* Basic Colors */
+    --gb-red:    #cc241d;
+    --gb-green:  #98971a;
+    --gb-yellow: #d79921;
+    --gb-blue:   #458588;
+    --gb-purple: #b16286;
+    --gb-aqua:   #689d6a;
+    --gb-gray:   #928374;
+    --gb-orange: #d65d0e;
+    /* Brighter/Washed Out Variants */
+    --gb-red-bright:    #fb4934;
+    --gb-green-bright:  #b8bb26;
+    --gb-yellow-bright: #fabd2f;
+    --gb-blue-bright:   #83a598;
+    --gb-purple-bright: #d3869b;
+    --gb-aqua-bright:   #8ec07c;
+    --gb-gray-bright:   #a89984;
+    --gb-orange-bright: #fe8019;
+    /* From https://github.com/morhetz/gruvbox (MIT/X11 License) */
+
+    /* Sizes */
+    --radius-radius: 0.5rem;
     --thumb-size: 100px;
+
+    /* Colors */
+    --foreground-color: var(--gb-white);
+    --background-color: var(--gb-black);
+    --sticky-color: var(--gb-green);
+    --nsfw-color: var(--gb-red);
+    --spoiler-color: var(--gb-gray);
+    --title-color: var(--gb-orange);
+    --link-color: var(--gb-blue);
+    --link-hover-color: var(--gb-blue-bright);
+
+    /* Elements */
+    --border: 2px solid var(--foreground-color);
+
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    font-variant-ligatures: normal;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+    text-align: center;
+}
+
+a, a:visited {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
+}
+
+#main-page {
+    display: inline-block;
+    width: 80%;
+    text-align: left;
 }
 
 .post-container {
-    margin: 1rem 0;
+    display: flex;
+    margin-bottom: 1rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid black;
+    border-bottom: var(--border);
+}
+.post-container-left {
+    width: var(--thumb-size);
+    margin-right: 0.5rem;
+}
+.post-container-right {
+    margin-left: 0.5rem;
+    flex: 2;
 }
 
-.post-thumbnail {
+.post-score {
+    background-color: var(--foreground-color);
+    color: var(--background-color);
+    text-align: center;
+    font-weight: bold;
+    height: 1rem;
+    font-size: 0.8rem;
+    border-top-right-radius: var(--radius-radius);
+    border-top-left-radius: var(--radius-radius);
+    border: var(--border);
+}
+
+.post-thumbnail, .post-no-thumbnail {
     position: relative;
+    box-sizing: border-box;
     width: var(--thumb-size);
     height: var(--thumb-size);
-    background-color: black;
+    background-color: var(--foreground-color);
+    overflow: hidden;
+    border-bottom-right-radius: var(--radius-radius);
+    border-bottom-left-radius: var(--radius-radius);
+    border: var(--border);
 }
 .post-thumbnail img {
     position: absolute;
@@ -24,22 +116,37 @@
     right: 0;
     bottom: 0;
 }
-.post-thumbnail:empty {
-    background-color: gray;
+.post-no-thumbnail {
+    background-color: var(--background-color);
 }
 
 .post-title {
     font-size: 1.2rem;
     font-weight: bold;
+    color: var(--title-color);
 }
 .post-title.sticky-post {
-    color: green;
+    color: var(--sticky-color);
 }
 
+.post-byline {
+    font-size: 0.8rem;
+}
+.post-author::before {
+    content: "u/";
+}
+.post-subreddit::before {
+    content: "r/";
+}
 .post-nsfw-tag {
-    color: red;
+    color: var(--nsfw-color);
+    font-weight: bold;
+}
+.post-spoiler-tag {
+    color: var(--spoiler-color);
+    font-weight: bold;
 }
 
-.post-spoiler-tag {
-    color: aqua;
+.post-actions a {
+    font-weight: bold;
 }

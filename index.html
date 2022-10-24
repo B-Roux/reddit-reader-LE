@@ -8,7 +8,75 @@
 </head>
 
 <body>
-    <div id="destination"></div>
+    <div id="main-page">
+        <div>
+            <form>
+                <label>
+                    subreddit
+                    <input type="text" id="subreddit-name" onchange="changeSubreddit(value)" value="all" autocomplete="off">
+                </label>
+
+                <span>
+                    <label>
+                        hot
+                        <input type="radio" name="sort-by" value="hot" 
+                        onchange="changeSort(value)" autocomplete="off" checked>
+                    </label>
+                    <label>
+                        new
+                        <input type="radio" name="sort-by" value="new" 
+                        onchange="changeSort(value)" autocomplete="off">
+                    </label>
+                    <label>
+                        rising
+                        <input type="radio" name="sort-by" value="rising" 
+                        onchange="changeSort(value)" autocomplete="off">
+                    </label>
+                    <label>
+                        controversial
+                        <input type="radio" name="sort-by" value="controversial"
+                        onchange="changeSort(value)" autocomplete="off">
+                    </label>
+                    <label>
+                        top
+                        <input type="radio" name="sort-by" value="top"
+                        onchange="changeSort(value)" autocomplete="off">
+                    </label>
+                </span>
+
+                <span id="from-time-radio" style="display: none;">
+                    <label>
+                        all time
+                        <input type="radio" name="from-time" value="all" onchange="changeTime(value)" autocomplete="off" checked>
+                    </label>
+                    <label>
+                        last hour
+                        <input type="radio" name="from-time" value="hour" onchange="changeTime(value)" autocomplete="off">
+                    </label>
+                    <label>
+                        last day
+                        <input type="radio" name="from-time" value="day" onchange="changeTime(value)" autocomplete="off">
+                    </label>
+                    <label>
+                        last week
+                        <input type="radio" name="from-time" value="week" onchange="changeTime(value)" autocomplete="off">
+                    </label>
+                    <label>
+                        last month
+                        <input type="radio" name="from-time" value="month" onchange="changeTime(value)" autocomplete="off">
+                    </label>
+                    <label>
+                        last year
+                        <input type="radio" name="from-time" value="year" onchange="changeTime(value)" autocomplete="off">
+                    </label>
+                </span>
+
+                <input type="button" onclick="getNewPostPage()" value="go">
+
+            </form>
+        </div>
+        <div class="post-list"></div>
+    </div>
     <script src="script.js">
     </script>
 </body>
