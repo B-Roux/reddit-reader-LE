@@ -1,8 +1,12 @@
 const URLParams = new URLSearchParams(window.location.search);
 
-var subredditToFetch = null;
-var sortToFetch = null;
-var timeToFetch = null;
+var subredditToFetch = getURLParam("subreddit", "all");
+var sortToFetch = getURLParam("sort", "hot");
+var timeToFetch = getURLParam("time", "all");
+
+const thisSubreddit = subredditToFetch;
+const thisSort = sortToFetch;
+const thisTime = timeToFetch;
 
 var timeSelectorRadio = null;
 var generatorDestination = null;
@@ -14,20 +18,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
     timeSelectorRadio = document.querySelector("#from-time-radio");
     generatorDestination = document.querySelector("#generator-destination");
 
-    // Initialize globals
-    subredditToFetch = getURLParam("subreddit", "all");
-    sortToFetch = getURLParam("sort", "hot");
-    timeToFetch = getURLParam("time", "all");
-
     // Initialize UI
-    document.querySelector("#subreddit-name").value = subredditToFetch;
+    document.querySelector("#subreddit-name").value = thisSubreddit;
     document.querySelectorAll('.sort-selector').forEach((radioButton) => {
-        radioButton.checked = radioButton.value == sortToFetch;
+        radioButton.checked = radioButton.value == thisSort;
     });
     document.querySelectorAll('.time-selector').forEach((radioButton) => {
-        radioButton.checked = radioButton.value == timeToFetch;
+        radioButton.checked = radioButton.value == thisTime;
     });
-    if (sortToFetch == "controversial" || sortToFetch == "top") {
+    if (thisSort == "controversial" || thisSort == "top") {
         timeSelectorRadio.style = "display: initial;";
     } else {
         timeSelectorRadio.style = "display: none;";
@@ -66,7 +65,7 @@ function navigateToQueriedPage() {
 // Functionality
 
 function loadNewPage() {
-    let url = makeRedditURL(
+    let url = subredditJsonURL(
         getURLParam("subreddit", "all"),
         getURLParam("sort", "hot"),
         getURLParam("time", "all"),
@@ -75,36 +74,31 @@ function loadNewPage() {
     makeSubredditPage(url, generatorDestination);
 }
 
-function makeRedditURL(subreddit, sort, time, after=null) {
-    let url = "https://api.reddit.com/r/" + subreddit + "/" + sort;
+function subredditJsonURL(subreddit, sort, time, after = null) {
+    let url = "https://api.reddit.com/r/" + subreddit + "/" + sort + "?raw_json=1"
     if (sort == "controversial" || sort == "top") {
-        url += "?t=" + time;
-        if (after != null) {
-            url += "&after=" + after;
-        }
-    } else {
-        if (after != null) {
-            url += "?after=" + after;
-        }
+        url += "&t=" + time;
+    }
+    if (after != null) {
+        url += "&after=" + after;
     }
     return url;
 }
 
-function makeReaderSubredditURL(subreddit, sort="hot", time="all", after=null) {
+function makeReaderSubredditURL(subreddit, sort = "hot", time = "all", after = null) {
     let url = "file:///C:/Users/baren/source/repos/birddit/index.html" //TODO
-    + "?subreddit=" + subreddit
-    + "&sort=" + sort;
+        + "?subreddit=" + subreddit
+        + "&sort=" + sort;
     if (sort == "controversial" || sort == "top") {
         url += "&time=" + time;
     }
     if (after != null) {
         url += "&after=" + after;
     }
-    console.log(url);
     return url;
 }
 
-function getURLParam(name, default_=null) {
+function getURLParam(name, default_ = null) {
     if (URLParams.has(name)) {
         return URLParams.get(name);
     } else {
@@ -118,8 +112,20 @@ function makeSubredditPage(url, destination) {
     fetchRedditPage(url)
         .then(function (data) {
             data.data.children.forEach(child => {
-                destination.appendChild(makePostNode(child.data)); 
+                destination.appendChild(makePostNode(child.data));
             });
+
+            let nextPage = document.createElement("a");
+            nextPage.setAttribute("id", "next-page-link");
+            nextPage.setAttribute("href", makeReaderSubredditURL(
+                thisSubreddit,
+                thisSort,
+                thisTime,
+                data.data.after
+            ));
+            nextPage.appendChild(document.createTextNode("next page"));
+            destination.appendChild(nextPage);
+
         })
         .catch(function (err) {
             alert(err);
@@ -152,7 +158,7 @@ function makePostNode(post) {
     ) {
         let thumbnailContainer = document.createElement("div");
         thumbnailContainer.setAttribute(
-            "class", 
+            "class",
             "post-no-thumbnail no-thumbnail-type-" + post.thumbnail
         );
         left.appendChild(thumbnailContainer);
@@ -190,7 +196,7 @@ function makePostNode(post) {
     subreddit.setAttribute("href", makeReaderSubredditURL(post.subreddit));
     subreddit.appendChild(document.createTextNode(post.subreddit));
     byline.appendChild(subreddit);
-    let millisSincePosted = Math.round(Date.now() - post.created*1000);
+    let millisSincePosted = Math.round(Date.now() - post.created * 1000);
     byline.appendChild(document.createTextNode(" " + formatDuration(millisSincePosted) + " ago"));
     if (post.edited) {
         byline.appendChild(document.createTextNode("*"));
@@ -231,19 +237,19 @@ function makePostNode(post) {
 }
 
 function formatDuration(millis) {
-    let seconds = millis/1000;
+    let seconds = millis / 1000;
     if (seconds < 60) {
         return Math.round(seconds).toString() + " seconds";
     }
-    let minutes = seconds/60;
+    let minutes = seconds / 60;
     if (minutes < 60) {
         return Math.round(minutes).toString() + " minutes";
     }
-    let hours = minutes/60;
+    let hours = minutes / 60;
     if (hours < 24) {
         return Math.round(hours).toString() + " hours";
     }
-    let days = hours/24;
+    let days = hours / 24;
     return Math.round(days).toString() + " days";
 }
 

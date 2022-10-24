@@ -42,8 +42,9 @@
 
     /* Elements */
     --border: 2px solid var(--foreground-color);
+    --font-family: 'Fira Code', monospace;
 
-    font-family: 'Fira Code', monospace;
+    font-family: var(--font-family);
     font-size: 14px;
     font-variant-ligatures: normal;
 }
@@ -64,10 +65,18 @@ a:hover {
     text-decoration: underline;
 }
 
-#main-page {
-    display: inline-block;
-    width: 80%;
-    text-align: left;
+label {
+    word-spacing: 0;
+}
+
+input {
+    font-family: var(--font-family);
+    border: none;
+    border-radius: 0;
+}
+
+input:focus {
+    outline: none;
 }
 
 .post-container {
@@ -164,5 +173,35 @@ a:hover {
 .post-links {
     display: inline-block;
     margin-right: 1.2rem;
+    font-weight: bold;
+}
+
+#main-page {
+    display: inline-block;
+    width: 80%;
+    text-align: left;
+    margin-bottom: 50vh;
+}
+
+#navigator {
+    text-align: center;
+    border-bottom: var(--border);
+    padding: 0.25rem 0 1rem 0;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+#subreddit-name {
+    display: inline;
+    height: 1.1em;
+    width: 10em;
+    background-color: var(--foreground-color);
+    color: var(--background-color);
+}
+
+#next-page-link {
+    display: block;
+    text-align: center;
+    font-size: 1.1rem;
     font-weight: bold;
 }

@@ -9,76 +9,67 @@
 
 <body>
     <div id="main-page">
-        <div>
+        <div id="navigator">
             <form>
                 <label>
-                    subreddit
-                    <input type="text" id="subreddit-name" onchange="changeSubreddit(value)" 
+                    r/<input type="text" id="subreddit-name" onchange="changeSubreddit(value)" 
                     value="all" autocomplete="off">
                 </label>
 
+                sort:
                 <span>
                     <label>
-                        hot
-                        <input type="radio" class="sort-selector" name="sort-selector" 
+                        hot<input type="radio" class="sort-selector" name="sort-selector" 
                         value="hot" onchange="changeSort(value)" autocomplete="off" checked>
                     </label>
                     <label>
-                        new
-                        <input type="radio" class="sort-selector" name="sort-selector" 
+                        new<input type="radio" class="sort-selector" name="sort-selector" 
                         value="new" onchange="changeSort(value)" autocomplete="off">
                     </label>
                     <label>
-                        rising
-                        <input type="radio" class="sort-selector" name="sort-selector" 
+                        rising<input type="radio" class="sort-selector" name="sort-selector" 
                         value="rising" onchange="changeSort(value)" autocomplete="off">
                     </label>
                     <label>
-                        controversial
-                        <input type="radio" class="sort-selector" name="sort-selector" 
+                        controversial<input type="radio" class="sort-selector" name="sort-selector" 
                         value="controversial" onchange="changeSort(value)" autocomplete="off">
                     </label>
                     <label>
-                        top
-                        <input type="radio" class="sort-selector" name="sort-selector" 
+                        top<input type="radio" class="sort-selector" name="sort-selector" 
                         value="top" onchange="changeSort(value)" autocomplete="off">
                     </label>
                 </span>
 
+                <input type="button" onclick="navigateToQueriedPage()" value="go">
+
                 <span id="from-time-radio" style="display: none;">
+                    <br>
+                    time:
                     <label>
-                        all time
-                        <input type="radio" class="time-selector" name="time-selector" 
+                        ever<input type="radio" class="time-selector" name="time-selector" 
                         value="all" onchange="changeTime(value)" autocomplete="off" checked>
                     </label>
                     <label>
-                        last hour
-                        <input type="radio" class="time-selector" name="time-selector" 
+                        hour<input type="radio" class="time-selector" name="time-selector" 
                         value="hour" onchange="changeTime(value)" autocomplete="off">
                     </label>
                     <label>
-                        last day
-                        <input type="radio" class="time-selector" name="time-selector" 
+                        day<input type="radio" class="time-selector" name="time-selector" 
                         value="day" onchange="changeTime(value)" autocomplete="off">
                     </label>
                     <label>
-                        last week
-                        <input type="radio" class="time-selector" name="time-selector" 
+                        week<input type="radio" class="time-selector" name="time-selector" 
                         value="week" onchange="changeTime(value)" autocomplete="off">
                     </label>
                     <label>
-                        last month
-                        <input type="radio" class="time-selector" name="time-selector" 
+                        month<input type="radio" class="time-selector" name="time-selector" 
                         value="month" onchange="changeTime(value)" autocomplete="off">
                     </label>
                     <label>
-                        last year
-                        <input type="radio" class="time-selector" name="time-selectortime" 
+                        year<input type="radio" class="time-selector" name="time-selectortime" 
                         value="year" onchange="changeTime(value)" autocomplete="off">
                     </label>
                 </span>
-
-                <input type="button" onclick="navigateToQueriedPage()" value="go">
 
             </form>
         </div>
