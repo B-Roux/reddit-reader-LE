@@ -224,31 +224,31 @@ function makePostNode(post) {
     }
     right.appendChild(byline);
 
-    let openPreview = document.createElement("input");
-    openPreview.setAttribute("value", "preview");
-    openPreview.setAttribute("type", "button");
-    openPreview.setAttribute("class", "post-links link-button");
-    openPreview.setAttribute("onclick", "togglePreview(this)");
-    right.appendChild(openPreview);
+    let togglePreviewBtn = document.createElement("input");
+    togglePreviewBtn.setAttribute("value", "preview");
+    togglePreviewBtn.setAttribute("type", "button");
+    togglePreviewBtn.setAttribute("class", "post-links link-button");
+    togglePreviewBtn.setAttribute("onclick", "togglePreview(this)");
+    right.appendChild(togglePreviewBtn);
 
-    let openLink = document.createElement("a");
-    openLink.appendChild(document.createTextNode("reddit"));
-    openLink.setAttribute("href", redditURL + post.permalink);
-    openLink.setAttribute("target", "_blank");
-    openLink.setAttribute("class", "post-links");
-    right.appendChild(openLink);
+    let openRedditLnk = document.createElement("a");
+    openRedditLnk.appendChild(document.createTextNode("reddit"));
+    openRedditLnk.setAttribute("href", redditURL + post.permalink);
+    openRedditLnk.setAttribute("target", "_blank");
+    openRedditLnk.setAttribute("class", "post-links");
+    right.appendChild(openRedditLnk);
 
-    let openComments = document.createElement("input");
-    openComments.setAttribute("value", "comments (" + post.num_comments + ")");
-    openComments.setAttribute("type", "button");
-    openComments.setAttribute("class", "post-links link-button");
-    openComments.setAttribute("onclick", "toggleComments(this)");
-    right.appendChild(openComments);
+    let openCommentsLnk = document.createElement("a");
+    openCommentsLnk.setAttribute("href", "#");
+    openCommentsLnk.setAttribute("class", "post-links");
+    openCommentsLnk.setAttribute("onclick", "alert('TODO')");
+    openCommentsLnk.appendChild(document.createTextNode("comments (" + post.num_comments + ")"));
+    right.appendChild(openCommentsLnk);
 
     let previewContainer = document.createElement("div");
     previewContainer.setAttribute("class", "post-preview-container");
     previewContainer.setAttribute("style", "display:none;");
-    previewContainer.setAttribute("data-show", "hidden");
+    previewContainer.setAttribute("data-show", "hide");
     bottom.appendChild(previewContainer);
 
     container.appendChild(left);
@@ -261,28 +261,13 @@ function makePostNode(post) {
 function togglePreview(spawningButton) {
     let previewContainer = spawningButton
         .parentElement.parentElement.querySelector(".post-preview-container");
-    if (previewContainer.dataset.show != "preview") {
-        previewContainer.dataset.show = "preview";
+    if (previewContainer.dataset.show != "show") {
+        previewContainer.dataset.show = "show";
         previewContainer.style.display = "block";
         previewContainer.innerHTML = "";
         //TODO
     } else {
-        previewContainer.dataset.show = "hidden";
-        previewContainer.style.display = "none";
-    }
-}
-
-// Toggle the comments window
-function toggleComments(spawningButton) {
-    let previewContainer = spawningButton
-        .parentElement.parentElement.querySelector(".post-preview-container");
-    if (previewContainer.dataset.show != "comments") {
-        previewContainer.dataset.show = "comments";
-        previewContainer.style.display = "block";
-        previewContainer.innerHTML = "";
-        //TODO
-    } else {
-        previewContainer.dataset.show = "hidden";
+        previewContainer.dataset.show = "hide";
         previewContainer.style.display = "none";
     }
 }
