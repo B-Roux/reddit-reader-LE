@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
 :root {
     /* Background/Foreground Colors */
@@ -25,7 +25,7 @@
     /* From https://github.com/morhetz/gruvbox (MIT/X11 License) */
 
     /* Sizes */
-    --radius-radius: 0.5rem;
+    --border-radius: 0.5rem;
     --thumb-size: 100px;
 
     /* Colors */
@@ -39,10 +39,12 @@
     --title-hover-color: var(--gb-orange-bright);
     --link-color: var(--gb-blue);
     --link-hover-color: var(--gb-blue-bright);
+    --important-color: var(--gb-red);
+    --important-hover-color: var(--gb-red-bright);
 
     /* Elements */
     --border: 2px solid var(--foreground-color);
-    --font-family: 'Fira Code', monospace;
+    --font-family: 'Roboto', sans-serif;
 
     font-family: var(--font-family);
     font-size: 14px;
@@ -55,43 +57,88 @@ body {
     text-align: center;
 }
 
-a, a:visited {
-    color: var(--link-color);
-    text-decoration: none;
-}
-
-a:hover {
-    color: var(--link-hover-color);
-    text-decoration: underline;
-}
-
 label {
     word-spacing: 0;
 }
 
 input {
-    font-family: var(--font-family);
-    border: none;
+    display: inline;
     border-radius: 0;
+    border: none;
+    background-color: var(--foreground-color);
+    color: var(--background-color);
+    font-family: var(--font-family);
+}
+
+input[type="text"] {
+    height: 1.2rem;
+    font-family: monospace;
+}
+
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    display: inline-block;
+    height: 0.6em;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    border: var(--border);
+    background-color: var(--background-color);
+    cursor: pointer;
+    vertical-align: baseline;
+    margin-right: 0.5em;
+    margin-left: 0.2em;
+}
+input[type="radio"]:checked {
+background-color: var(--foreground-color);
+}
+
+input[type="button"] {
+    height: 1.2rem;
+    cursor: pointer;
+    box-sizing: content-box;
 }
 
 input:focus {
     outline: none;
 }
 
+a, a:visited, .link-button {
+    display: inline;
+    height: unset;
+    padding: 0;
+    background-color: transparent;
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover, .link-button:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
+}
+
 .post-container {
-    display: flex;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: var(--thumb-size) auto;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
+    column-gap: 1rem;
     border-bottom: var(--border);
 }
 .post-container-left {
-    width: var(--thumb-size);
-    margin-right: 0.5rem;
+    grid-row: 1;
+    grid-column: 1;
+    user-select: none;
 }
 .post-container-right {
-    margin-left: 0.5rem;
-    flex: 2;
+    grid-row: 1;
+    grid-column: 2;
+}
+.post-container-bottom {
+    grid-row: 2;
+    grid-column: 1 / 3;
 }
 
 .post-score {
@@ -101,8 +148,8 @@ input:focus {
     font-weight: bold;
     height: 1rem;
     font-size: 0.8rem;
-    border-top-right-radius: var(--radius-radius);
-    border-top-left-radius: var(--radius-radius);
+    border-top-right-radius: var(--border-radius);
+    border-top-left-radius: var(--border-radius);
     border: var(--border);
 }
 
@@ -113,8 +160,8 @@ input:focus {
     height: var(--thumb-size);
     background-color: var(--foreground-color);
     overflow: hidden;
-    border-bottom-right-radius: var(--radius-radius);
-    border-bottom-left-radius: var(--radius-radius);
+    border-bottom-right-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
     border: var(--border);
 }
 .post-thumbnail img {
@@ -172,15 +219,37 @@ input:focus {
 
 .post-links {
     display: inline-block;
-    margin-right: 1.2rem;
+    margin-right: 1rem;
     font-weight: bold;
+}
+
+.post-preview-container {
+    height: 33vh;
+    aspect-ratio: 16 / 9;
+    overflow: auto;
+    resize: both;
+    box-sizing: border-box;
+    min-width: var(--thumb-size);
+    min-height: var(--thumb-size);
+    border: var(--border);
+    border-radius: var(--border-radius);
+    background-color: var(--foreground-color);
+    margin-bottom: 1rem;
+}
+
+.preview-close {
+    color: var(--important-color);
+    font-weight: bold;
+}
+.preview-close:hover {
+    color: var(--important-hover-color);
 }
 
 #main-page {
     display: inline-block;
     width: 80%;
     text-align: left;
-    margin-bottom: 50vh;
+    margin-bottom: 25vh;
 }
 
 #navigator {
@@ -189,14 +258,12 @@ input:focus {
     padding: 0.25rem 0 1rem 0;
     margin-bottom: 1rem;
     font-size: 0.9rem;
+    line-height: 2em;
 }
 
 #subreddit-name {
-    display: inline;
-    height: 1.1em;
     width: 10em;
-    background-color: var(--foreground-color);
-    color: var(--background-color);
+    margin-right: 0.5em;
 }
 
 #next-page-link {
@@ -204,4 +271,5 @@ input:focus {
     text-align: center;
     font-size: 1.1rem;
     font-weight: bold;
+    margin-top: 1rem;
 }

@@ -16,7 +16,6 @@
                     value="all" autocomplete="off">
                 </label>
 
-                sort:
                 <span>
                     <label>
                         hot<input type="radio" class="sort-selector" name="sort-selector" 
@@ -42,11 +41,10 @@
 
                 <input type="button" onclick="navigateToQueriedPage()" value="go">
 
-                <span id="from-time-radio" style="display: none;">
+                <span id="time-selector-group" style="display: none;">
                     <br>
-                    time:
                     <label>
-                        ever<input type="radio" class="time-selector" name="time-selector" 
+                        all time<input type="radio" class="time-selector" name="time-selector" 
                         value="all" onchange="changeTime(value)" autocomplete="off" checked>
                     </label>
                     <label>
@@ -66,7 +64,7 @@
                         value="month" onchange="changeTime(value)" autocomplete="off">
                     </label>
                     <label>
-                        year<input type="radio" class="time-selector" name="time-selectortime" 
+                        year<input type="radio" class="time-selector" name="time-selector" 
                         value="year" onchange="changeTime(value)" autocomplete="off">
                     </label>
                 </span>

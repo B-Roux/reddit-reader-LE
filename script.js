@@ -15,7 +15,7 @@ var generatorDestination = null;
 
 window.addEventListener('DOMContentLoaded', (event) => {
     // Bind UI elements
-    timeSelectorRadio = document.querySelector("#from-time-radio");
+    timeSelectorRadio = document.querySelector("#time-selector-group");
     generatorDestination = document.querySelector("#generator-destination");
 
     // Initialize UI
@@ -27,9 +27,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
         radioButton.checked = radioButton.value == thisTime;
     });
     if (thisSort == "controversial" || thisSort == "top") {
-        timeSelectorRadio.style = "display: initial;";
+        timeSelectorRadio.style.display = "initial";
     } else {
-        timeSelectorRadio.style = "display: none;";
+        timeSelectorRadio.style.display = "none";
     }
 
     // Load the requested information
@@ -43,9 +43,9 @@ function changeSubreddit(value) {
 }
 function changeSort(value) {
     if (value == "controversial" || value == "top") {
-        timeSelectorRadio.style = "display: initial;";
+        timeSelectorRadio.style.display = "initial";
     } else {
-        timeSelectorRadio.style = "display: none;";
+        timeSelectorRadio.style.display = "none";
     }
     sortToFetch = value;
 }
@@ -140,9 +140,10 @@ function makePostNode(post) {
 
     let left = document.createElement("div");
     left.setAttribute("class", "post-container-left");
-
     let right = document.createElement("div");
     right.setAttribute("class", "post-container-right");
+    let bottom = document.createElement("div");
+    bottom.setAttribute("class", "post-container-bottom");
 
     let score = document.createElement("div");
     score.setAttribute("class", "post-score");
@@ -167,6 +168,7 @@ function makePostNode(post) {
         thumbnailContainer.setAttribute("class", "post-thumbnail");
         let thumbnail = document.createElement("img");
         thumbnail.setAttribute("src", post.thumbnail);
+        thumbnail.setAttribute("draggable", "false");
         thumbnailContainer.appendChild(thumbnail);
         left.appendChild(thumbnailContainer);
     }
@@ -201,6 +203,7 @@ function makePostNode(post) {
     if (post.edited) {
         byline.appendChild(document.createTextNode("*"));
     }
+    byline.appendChild(document.createTextNode(" (" + post.domain + ")"));
     if (post.over_18) {
         let nsfwTag = document.createElement("span");
         nsfwTag.setAttribute("class", "post-nsfw-tag");
@@ -217,23 +220,49 @@ function makePostNode(post) {
     }
     right.appendChild(byline);
 
+    let openPreview = document.createElement("input");
+    openPreview.setAttribute("value", "preview");
+    openPreview.setAttribute("type", "button");
+    openPreview.setAttribute("class", "post-links link-button");
+    openPreview.setAttribute("onclick", "togglePreview(this)");
+    right.appendChild(openPreview);
+
     let openLink = document.createElement("a");
     openLink.appendChild(document.createTextNode("reddit"));
     openLink.setAttribute("href", redditURL + post.permalink);
     openLink.setAttribute("target", "_blank");
     openLink.setAttribute("class", "post-links");
     right.appendChild(openLink);
-
-    let openComments = document.createElement("a");
-    openComments.appendChild(document.createTextNode("comments (" + post.num_comments + ")"));
-    openComments.setAttribute("href", redditURL + post.permalink);
-    openComments.setAttribute("target", "_blank");
-    openComments.setAttribute("class", "post-links");
+    
+    let openComments = document.createElement("input");
+    openComments.setAttribute("value", "comments (" + post.num_comments + ")");
+    openComments.setAttribute("type", "button");
+    openComments.setAttribute("class", "post-links link-button");
+    openComments.setAttribute("onclick", "alert('TODO')");
     right.appendChild(openComments);
+
+    let previewContainer = document.createElement("div");
+    previewContainer.setAttribute("class", "post-preview-container");
+    previewContainer.setAttribute("style", "display:none;");
+    previewContainer.setAttribute("data-display", "none");
+    bottom.appendChild(previewContainer);
 
     container.appendChild(left);
     container.appendChild(right);
+    container.appendChild(bottom);
     return container;
+}
+
+function togglePreview(spawningButton) {
+    let previewContainer = spawningButton
+        .parentElement.parentElement.querySelector(".post-preview-container");
+    if (previewContainer.dataset.display == "none") {
+        previewContainer.dataset.display = "block";
+        previewContainer.setAttribute("style", "display:block;");
+    } else {
+        previewContainer.dataset.display = "none";
+        previewContainer.setAttribute("style", "display:none;");
+    }
 }
 
 function formatDuration(millis) {
