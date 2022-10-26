@@ -1,18 +1,27 @@
+// URLs/APIs/etc.
+const redditURL = "https://www.reddit.com/";
+const redditAPI = "https://api.reddit.com/";
+const readerURL = "file:///C:/Users/baren/source/repos/birddit/index.html/";
+
+// Cache the URL parameters
 const URLParams = new URLSearchParams(window.location.search);
+const thisSubreddit = getURLParam("subreddit", "all");
+const thisSort = getURLParam("sort", "hot");
+const thisTime = getURLParam("time", "all");
+const thisAfter = getURLParam("after", null);
 
-var subredditToFetch = getURLParam("subreddit", "all");
-var sortToFetch = getURLParam("sort", "hot");
-var timeToFetch = getURLParam("time", "all");
+//Global Variables
 
-const thisSubreddit = subredditToFetch;
-const thisSort = sortToFetch;
-const thisTime = timeToFetch;
+// Cached query
+var subredditToFetch = thisSubreddit;
+var sortToFetch = thisSort;
+var timeToFetch = thisTime;
 
+// Cached element refs
 var timeSelectorRadio = null;
 var generatorDestination = null;
 
-// Main
-
+// Main - to be run after the DOM is fully loaded
 window.addEventListener('DOMContentLoaded', (event) => {
     // Bind UI elements
     timeSelectorRadio = document.querySelector("#time-selector-group");
@@ -27,32 +36,44 @@ window.addEventListener('DOMContentLoaded', (event) => {
         radioButton.checked = radioButton.value == thisTime;
     });
     if (thisSort == "controversial" || thisSort == "top") {
-        timeSelectorRadio.style.display = "initial";
+        timeSelectorRadio.style.display = "inline";
     } else {
         timeSelectorRadio.style.display = "none";
     }
 
     // Load the requested information
-    loadNewPage();
+    let url = makeSubredditJsonURL(
+        thisSubreddit,
+        thisSort,
+        thisTime,
+        getURLParam("after", null)
+    );
+    makeSubredditPage(url, generatorDestination);
 });
 
 // UI controls
 
+// Caches the value entered into the subreddit textbox
 function changeSubreddit(value) {
     subredditToFetch = value;
 }
+
+// Caches the value entered into the sort radio group
 function changeSort(value) {
     if (value == "controversial" || value == "top") {
-        timeSelectorRadio.style.display = "initial";
+        timeSelectorRadio.style.display = "inline";
     } else {
         timeSelectorRadio.style.display = "none";
     }
     sortToFetch = value;
 }
+
+// Caches the value entered into the time period radio group
 function changeTime(value) {
     timeToFetch = value;
 }
 
+// Navigates to a new reader page based on the cached query
 function navigateToQueriedPage() {
     window.location.href = makeReaderSubredditURL(
         subredditToFetch,
@@ -64,18 +85,9 @@ function navigateToQueriedPage() {
 
 // Functionality
 
-function loadNewPage() {
-    let url = subredditJsonURL(
-        getURLParam("subreddit", "all"),
-        getURLParam("sort", "hot"),
-        getURLParam("time", "all"),
-        getURLParam("after", null)
-    );
-    makeSubredditPage(url, generatorDestination);
-}
-
-function subredditJsonURL(subreddit, sort, time, after = null) {
-    let url = "https://api.reddit.com/r/" + subreddit + "/" + sort + "?raw_json=1"
+// Make a URL that refers to a given query to the Reddit API
+function makeSubredditJsonURL(subreddit, sort = "hot", time = "all", after = null) {
+    let url = redditAPI + "r/" + subreddit + "/" + sort + "?raw_json=1"
     if (sort == "controversial" || sort == "top") {
         url += "&t=" + time;
     }
@@ -85,10 +97,9 @@ function subredditJsonURL(subreddit, sort, time, after = null) {
     return url;
 }
 
+// Make a URL that refers to a given query on this reader
 function makeReaderSubredditURL(subreddit, sort = "hot", time = "all", after = null) {
-    let url = "file:///C:/Users/baren/source/repos/birddit/index.html" //TODO
-        + "?subreddit=" + subreddit
-        + "&sort=" + sort;
+    let url = readerURL + "?subreddit=" + subreddit + "&sort=" + sort;
     if (sort == "controversial" || sort == "top") {
         url += "&time=" + time;
     }
@@ -98,18 +109,12 @@ function makeReaderSubredditURL(subreddit, sort = "hot", time = "all", after = n
     return url;
 }
 
-function getURLParam(name, default_ = null) {
-    if (URLParams.has(name)) {
-        return URLParams.get(name);
-    } else {
-        return default_;
-    }
-}
 
 // Reddit API interface
 
+// Append a subreddit page to the destination HTML node
 function makeSubredditPage(url, destination) {
-    fetchRedditPage(url)
+    fetchJSON(url)
         .then(function (data) {
             data.data.children.forEach(child => {
                 destination.appendChild(makePostNode(child.data));
@@ -132,9 +137,8 @@ function makeSubredditPage(url, destination) {
         });
 }
 
+// Make an HTML node of a single post
 function makePostNode(post) {
-    const redditURL = "https://www.reddit.com/";
-
     let container = document.createElement("div");
     container.setAttribute("class", "post-container");
 
@@ -233,18 +237,18 @@ function makePostNode(post) {
     openLink.setAttribute("target", "_blank");
     openLink.setAttribute("class", "post-links");
     right.appendChild(openLink);
-    
+
     let openComments = document.createElement("input");
     openComments.setAttribute("value", "comments (" + post.num_comments + ")");
     openComments.setAttribute("type", "button");
     openComments.setAttribute("class", "post-links link-button");
-    openComments.setAttribute("onclick", "alert('TODO')");
+    openComments.setAttribute("onclick", "toggleComments(this)");
     right.appendChild(openComments);
 
     let previewContainer = document.createElement("div");
     previewContainer.setAttribute("class", "post-preview-container");
     previewContainer.setAttribute("style", "display:none;");
-    previewContainer.setAttribute("data-display", "none");
+    previewContainer.setAttribute("data-show", "hidden");
     bottom.appendChild(previewContainer);
 
     container.appendChild(left);
@@ -253,18 +257,58 @@ function makePostNode(post) {
     return container;
 }
 
+// Toggle the preview window
 function togglePreview(spawningButton) {
     let previewContainer = spawningButton
         .parentElement.parentElement.querySelector(".post-preview-container");
-    if (previewContainer.dataset.display == "none") {
-        previewContainer.dataset.display = "block";
-        previewContainer.setAttribute("style", "display:block;");
+    if (previewContainer.dataset.show != "preview") {
+        previewContainer.dataset.show = "preview";
+        previewContainer.style.display = "block";
+        previewContainer.innerHTML = "";
+        //TODO
     } else {
-        previewContainer.dataset.display = "none";
-        previewContainer.setAttribute("style", "display:none;");
+        previewContainer.dataset.show = "hidden";
+        previewContainer.style.display = "none";
     }
 }
 
+// Toggle the comments window
+function toggleComments(spawningButton) {
+    let previewContainer = spawningButton
+        .parentElement.parentElement.querySelector(".post-preview-container");
+    if (previewContainer.dataset.show != "comments") {
+        previewContainer.dataset.show = "comments";
+        previewContainer.style.display = "block";
+        previewContainer.innerHTML = "";
+        //TODO
+    } else {
+        previewContainer.dataset.show = "hidden";
+        previewContainer.style.display = "none";
+    }
+}
+
+// Get and parse the JSON from an API request
+function fetchJSON(url) {
+    return new Promise((resolve, reject) => {
+        fetchResult = fetch(url)
+            .then(function (result) {
+                result.text()
+                    .then(function (text) {
+                        resolve(JSON.parse(text));
+                    })
+                    .catch(function (err) {
+                        reject(err);
+                    });
+            })
+            .catch(function (err) {
+                reject(err)
+            });
+    });
+}
+
+// Utility
+
+// Format millisecond duration as a human-readable string
 function formatDuration(millis) {
     let seconds = millis / 1000;
     if (seconds < 60) {
@@ -282,20 +326,11 @@ function formatDuration(millis) {
     return Math.round(days).toString() + " days";
 }
 
-function fetchRedditPage(url) {
-    return new Promise((resolve, reject) => {
-        fetchResult = fetch(url)
-            .then(function (result) {
-                result.text()
-                    .then(function (text) {
-                        resolve(JSON.parse(text));
-                    })
-                    .catch(function (err) {
-                        reject(err);
-                    });
-            })
-            .catch(function (err) {
-                reject(err)
-            });
-    });
+// Get URL parameters or a default if they do not exist
+function getURLParam(name, default_ = null) {
+    if (URLParams.has(name)) {
+        return URLParams.get(name);
+    } else {
+        return default_;
+    }
 }
