@@ -78,8 +78,7 @@ function navigateToQueriedPage() {
     window.location.href = makeReaderSubredditURL(
         subredditToFetch,
         sortToFetch,
-        timeToFetch,
-        null
+        timeToFetch
     );
 }
 
@@ -87,24 +86,24 @@ function navigateToQueriedPage() {
 
 // Make a URL that refers to a given query to the Reddit API
 function makeSubredditJsonURL(subreddit, sort = "hot", time = "all", after = null) {
-    let url = redditAPI + "r/" + subreddit + "/" + sort + "?raw_json=1"
+    let url = redditAPI + `r/${subreddit}/${sort}?raw_json=1`;
     if (sort == "controversial" || sort == "top") {
-        url += "&t=" + time;
+        url += `&t=${time}`;
     }
     if (after != null) {
-        url += "&after=" + after;
+        url += `&after=${after}`;
     }
     return url;
 }
 
 // Make a URL that refers to a given query on this reader
 function makeReaderSubredditURL(subreddit, sort = "hot", time = "all", after = null) {
-    let url = readerURL + "?subreddit=" + subreddit + "&sort=" + sort;
+    let url = readerURL + `?subreddit=${subreddit}&sort=${sort}`;
     if (sort == "controversial" || sort == "top") {
-        url += "&time=" + time;
+        url += `&time=${time}`;
     }
     if (after != null) {
-        url += "&after=" + after;
+        url += `&after=${after}`;
     }
     return url;
 }
@@ -192,7 +191,7 @@ function makePostNode(post) {
     byline.appendChild(document.createTextNode("submitted by "));
     let author = document.createElement("a");
     author.setAttribute("class", "post-author");
-    author.setAttribute("href", redditURL + "u/" + post.author);
+    author.setAttribute("href", redditURL + `u/${post.author}`);
     author.appendChild(document.createTextNode(post.author));
     byline.appendChild(author);
     byline.appendChild(document.createTextNode(" to "));
@@ -202,27 +201,25 @@ function makePostNode(post) {
     subreddit.appendChild(document.createTextNode(post.subreddit));
     byline.appendChild(subreddit);
     let millisSincePosted = Math.round(Date.now() - post.created * 1000);
-    byline.appendChild(document.createTextNode(" " + formatDuration(millisSincePosted) + " ago"));
+    byline.appendChild(document.createTextNode(` ${formatDuration(millisSincePosted)} ago`));
     if (post.edited) {
-        byline.appendChild(document.createTextNode("* "));
-    } else {
-        byline.appendChild(document.createTextNode(" "));
+        byline.appendChild(document.createTextNode("*"));
     }
     let domain = document.createElement("i");
-    domain.appendChild(document.createTextNode("(" + post.domain + ")"));
+    domain.appendChild(document.createTextNode(` (${post.domain})`));
     byline.appendChild(domain);
     if (post.over_18) {
         byline.appendChild(document.createTextNode(" "));
         let nsfwTag = document.createElement("i");
         nsfwTag.setAttribute("class", "post-nsfw-tag");
-        nsfwTag.appendChild(document.createTextNode("(nsfw)"));
+        nsfwTag.appendChild(document.createTextNode("[nsfw]"));
         byline.appendChild(nsfwTag);
     }
     if (post.spoiler) {
         byline.appendChild(document.createTextNode(" "));
         let spoilerTag = document.createElement("i");
         spoilerTag.setAttribute("class", "post-spoiler-tag");
-        spoilerTag.appendChild(document.createTextNode("(spoiler)"));
+        spoilerTag.appendChild(document.createTextNode("[spoiler]"));
         byline.appendChild(spoilerTag);
     }
     right.appendChild(byline);
@@ -245,7 +242,7 @@ function makePostNode(post) {
     openCommentsLnk.setAttribute("href", "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
     openCommentsLnk.setAttribute("target", "_blank");
     openCommentsLnk.setAttribute("class", "post-links");
-    openCommentsLnk.appendChild(document.createTextNode("comments (" + post.num_comments + ")"));
+    openCommentsLnk.appendChild(document.createTextNode(`comments (${post.num_comments})`));
     right.appendChild(openCommentsLnk);
 
     let previewContainer = document.createElement("div");
@@ -300,18 +297,18 @@ function fetchJSON(url) {
 function formatDuration(millis) {
     let seconds = millis / 1000;
     if (seconds < 60) {
-        return Math.round(seconds).toString() + " seconds";
+        return `${Math.round(seconds)} seconds`;
     }
     let minutes = seconds / 60;
     if (minutes < 60) {
-        return Math.round(minutes).toString() + " minutes";
+        return `${Math.round(minutes)} minutes`;
     }
     let hours = minutes / 60;
     if (hours < 24) {
-        return Math.round(hours).toString() + " hours";
+        return `${Math.round(hours)} hours`;
     }
     let days = hours / 24;
-    return Math.round(days).toString() + " days";
+    return `${Math.round(days)} days`;
 }
 
 // Get URL parameters or a default if they do not exist
