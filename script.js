@@ -1,7 +1,7 @@
 // URLs/APIs/etc.
 const redditURL = "https://www.reddit.com/";
 const redditAPI = "https://api.reddit.com/";
-const readerURL = "file:///C:/Users/baren/source/repos/birddit/index.html/";
+const readerURL = "file:///C:/Users/baren/source/repos/birddit/index.html";
 
 // Cache the URL parameters
 const URLParams = new URLSearchParams(window.location.search);
@@ -130,7 +130,6 @@ function makeSubredditPage(url, destination) {
             ));
             nextPage.appendChild(document.createTextNode("next page"));
             destination.appendChild(nextPage);
-
         })
         .catch(function (err) {
             alert(err);
@@ -205,21 +204,25 @@ function makePostNode(post) {
     let millisSincePosted = Math.round(Date.now() - post.created * 1000);
     byline.appendChild(document.createTextNode(" " + formatDuration(millisSincePosted) + " ago"));
     if (post.edited) {
-        byline.appendChild(document.createTextNode("*"));
+        byline.appendChild(document.createTextNode("* "));
+    } else {
+        byline.appendChild(document.createTextNode(" "));
     }
-    byline.appendChild(document.createTextNode(" (" + post.domain + ")"));
+    let domain = document.createElement("i");
+    domain.appendChild(document.createTextNode("(" + post.domain + ")"));
+    byline.appendChild(domain);
     if (post.over_18) {
-        let nsfwTag = document.createElement("span");
+        byline.appendChild(document.createTextNode(" "));
+        let nsfwTag = document.createElement("i");
         nsfwTag.setAttribute("class", "post-nsfw-tag");
         nsfwTag.appendChild(document.createTextNode("(nsfw)"));
-        byline.appendChild(document.createTextNode(" "));
         byline.appendChild(nsfwTag);
     }
     if (post.spoiler) {
-        let spoilerTag = document.createElement("span");
+        byline.appendChild(document.createTextNode(" "));
+        let spoilerTag = document.createElement("i");
         spoilerTag.setAttribute("class", "post-spoiler-tag");
         spoilerTag.appendChild(document.createTextNode("(spoiler)"));
-        byline.appendChild(document.createTextNode(" "));
         byline.appendChild(spoilerTag);
     }
     right.appendChild(byline);
@@ -239,9 +242,9 @@ function makePostNode(post) {
     right.appendChild(openRedditLnk);
 
     let openCommentsLnk = document.createElement("a");
-    openCommentsLnk.setAttribute("href", "#");
+    openCommentsLnk.setAttribute("href", "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    openCommentsLnk.setAttribute("target", "_blank");
     openCommentsLnk.setAttribute("class", "post-links");
-    openCommentsLnk.setAttribute("onclick", "alert('TODO')");
     openCommentsLnk.appendChild(document.createTextNode("comments (" + post.num_comments + ")"));
     right.appendChild(openCommentsLnk);
 
