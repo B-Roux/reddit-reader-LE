@@ -106,7 +106,7 @@ input[type="text"] {
     color: var(--gb-foreground0);
     height: 1.2rem;
     box-sizing: content-box;
-    padding: 0.1rem 0.75rem;
+    padding: 0.1rem 0.5rem;
 }
 
 input[type="radio"] {
@@ -215,8 +215,6 @@ a:hover, input[type="button"].link-button:hover {
 }
 
 .post-title, .post-title:visited {
-    display: block;
-    max-width: 95%;
     font-size: 1.2rem;
     font-weight: bold;
     color: var(--gb-orange);
@@ -246,6 +244,11 @@ a:hover, input[type="button"].link-button:hover {
 .post-nsfw-tag {
     color: var(--gb-red);
     font-weight: bold;
+    cursor: help;
+}
+.post-nsfw-tag:hover::after {
+    content: ": this content may be inappropriate for some";
+    font-weight: normal;
 }
 .post-spoiler-tag {
     color: var(--gb-aqua);
@@ -260,25 +263,46 @@ a:hover, input[type="button"].link-button:hover {
 }
 
 .post-preview-container {
-    height: 33vh;
-    aspect-ratio: 16 / 9;
-    overflow: auto;
-    resize: both;
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 66vh;
+    overflow: hidden;
+    resize: vertical;
     box-sizing: border-box;
-    min-width: var(--thumb-size);
-    min-height: var(--thumb-size);
+    min-height: 2rem;
     border: var(--border-thickness) solid var(--gb-background2);
     border-radius: var(--border-radius);
     border-bottom-right-radius: 2px;
     background-color: var(--gb-background2);
     margin-bottom: 1rem;
 }
+.post-preview-container iframe {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+.post-preview-container div.md {
+    height: 100%;
+    overflow-y: auto;
+    padding: 0 1rem;
+}
+
 
 #main-page {
     display: inline-block;
     width: 80%;
     text-align: left;
-    margin-bottom: 25vh;
+    margin-bottom: 10vh;
 }
 
 #navigator {
@@ -301,4 +325,23 @@ a:hover, input[type="button"].link-button:hover {
     font-size: 1.1rem;
     font-weight: bold;
     margin-top: 1rem;
+}
+
+/* Pi easter egg */
+#pi-easter-egg-cont {
+    text-align: right;
+    margin: 1rem;
+}
+#pi-easter-egg, #pi-easter-egg:visited {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.2rem;
+    color: var(--gb-background1);
+}
+#pi-easter-egg:hover {
+    color: var(--gb-blue-bright);
+}
+#pi-easter-egg:hover::before {
+    content: "click me ";
+    font-family: var(--font-family);
+    font-size: 1rem;
 }

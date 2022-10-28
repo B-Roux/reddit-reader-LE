@@ -90,7 +90,7 @@ function makeSubredditJsonURL(subreddit, sort = "hot", time = "all", after = nul
     if (sort == "controversial" || sort == "top") {
         url += `&t=${time}`;
     }
-    if (after != null) {
+    if (after !== null) {
         url += `&after=${after}`;
     }
     return url;
@@ -102,7 +102,7 @@ function makeReaderSubredditURL(subreddit, sort = "hot", time = "all", after = n
     if (sort == "controversial" || sort == "top") {
         url += `&time=${time}`;
     }
-    if (after != null) {
+    if (after !== null) {
         url += `&after=${after}`;
     }
     return url;
@@ -186,6 +186,8 @@ function makePostNode(post) {
     title.appendChild(document.createTextNode(post.title));
     right.appendChild(title);
 
+    right.appendChild(document.createElement("br"));
+
     let byline = document.createElement("div");
     byline.setAttribute("class", "post-byline");
     byline.appendChild(document.createTextNode("submitted by "));
@@ -224,12 +226,16 @@ function makePostNode(post) {
     }
     right.appendChild(byline);
 
-    let togglePreviewBtn = document.createElement("input");
-    togglePreviewBtn.setAttribute("value", "preview");
-    togglePreviewBtn.setAttribute("type", "button");
-    togglePreviewBtn.setAttribute("class", "post-links link-button");
-    togglePreviewBtn.setAttribute("onclick", "togglePreview(this)");
-    right.appendChild(togglePreviewBtn);
+    let mediaContent = getMediaContent(post);
+
+    if (mediaContent !== null) {
+        let togglePreviewBtn = document.createElement("input");
+        togglePreviewBtn.setAttribute("value", "preview");
+        togglePreviewBtn.setAttribute("type", "button");
+        togglePreviewBtn.setAttribute("class", "post-links link-button");
+        togglePreviewBtn.setAttribute("onclick", "togglePreview(this)");
+        right.appendChild(togglePreviewBtn);
+    }
 
     let openRedditLnk = document.createElement("a");
     openRedditLnk.appendChild(document.createTextNode("reddit"));
@@ -239,22 +245,38 @@ function makePostNode(post) {
     right.appendChild(openRedditLnk);
 
     let openCommentsLnk = document.createElement("a");
-    openCommentsLnk.setAttribute("href", "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    openCommentsLnk.setAttribute("href", "data:text/plain,Feature%20Coming%20Soon!");
     openCommentsLnk.setAttribute("target", "_blank");
     openCommentsLnk.setAttribute("class", "post-links");
     openCommentsLnk.appendChild(document.createTextNode(`comments (${post.num_comments})`));
     right.appendChild(openCommentsLnk);
 
-    let previewContainer = document.createElement("div");
-    previewContainer.setAttribute("class", "post-preview-container");
-    previewContainer.setAttribute("style", "display:none;");
-    previewContainer.setAttribute("data-show", "hide");
-    bottom.appendChild(previewContainer);
+    if (mediaContent !== null) {
+        let previewContainer = document.createElement("div");
+        previewContainer.setAttribute("class", "post-preview-container");
+        previewContainer.setAttribute("style", "display:none;");
+        previewContainer.setAttribute("data-show", "hide");
+        previewContainer.setAttribute("data-content", b64EncodeUnicode(mediaContent));
+        bottom.appendChild(previewContainer);
+    }
 
     container.appendChild(left);
     container.appendChild(right);
     container.appendChild(bottom);
     return container;
+}
+
+function getMediaContent(post) {
+    if (typeof post.selftext_html == "string") {
+        return post.selftext_html;
+    }
+    if (typeof post.secure_media_embed.content == "string") {
+        return post.secure_media_embed.content;
+    }
+    if (typeof post.media_embed.content == "string") {
+        return post.media_embed.content;
+    }
+    return null;
 }
 
 // Toggle the preview window
@@ -264,11 +286,11 @@ function togglePreview(spawningButton) {
     if (previewContainer.dataset.show != "show") {
         previewContainer.dataset.show = "show";
         previewContainer.style.display = "block";
-        previewContainer.innerHTML = "";
-        //TODO
+        previewContainer.innerHTML = unicodeDecodeB64(previewContainer.dataset.content);
     } else {
         previewContainer.dataset.show = "hide";
         previewContainer.style.display = "none";
+        previewContainer.innerHTML = "";
     }
 }
 
@@ -318,4 +340,13 @@ function getURLParam(name, default_ = null) {
     } else {
         return default_;
     }
+}
+
+// Encode and decode UTF-8
+// https://developer.mozilla.org/en-US/docs/Glossary/Base64
+function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str));
+}
+function unicodeDecodeB64(str) {
+    return decodeURIComponent(atob(str));
 }
