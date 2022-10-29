@@ -7,28 +7,28 @@
     --gb-light2: #d5c4a1;
     --gb-light3: #bdae93;
     --gb-light4: #a89984;
-    --gb-dark0:  #282828;
-    --gb-dark1:  #3c3836;
-    --gb-dark2:  #504945;
-    --gb-dark3:  #665c54;
-    --gb-dark4:  #7c6f64;
+    --gb-dark0: #282828;
+    --gb-dark1: #3c3836;
+    --gb-dark2: #504945;
+    --gb-dark3: #665c54;
+    --gb-dark4: #7c6f64;
     /* Basic Colors */
-    --gb-red:    #cc241d;
-    --gb-green:  #98971a;
+    --gb-red: #cc241d;
+    --gb-green: #98971a;
     --gb-yellow: #d79921;
-    --gb-blue:   #458588;
+    --gb-blue: #458588;
     --gb-purple: #b16286;
-    --gb-aqua:   #689d6a;
-    --gb-gray:   #928374;
+    --gb-aqua: #689d6a;
+    --gb-gray: #928374;
     --gb-orange: #d65d0e;
     /* Brighter/Washed Out Variants */
-    --gb-red-bright:    #fb4934;
-    --gb-green-bright:  #b8bb26;
+    --gb-red-bright: #fb4934;
+    --gb-green-bright: #b8bb26;
     --gb-yellow-bright: #fabd2f;
-    --gb-blue-bright:   #83a598;
+    --gb-blue-bright: #83a598;
     --gb-purple-bright: #d3869b;
-    --gb-aqua-bright:   #8ec07c;
-    --gb-gray-bright:   #a89984;
+    --gb-aqua-bright: #8ec07c;
+    --gb-gray-bright: #a89984;
     --gb-orange-bright: #fe8019;
     /* Defaults (Dark Mode) */
     --gb-foreground0: var(--gb-light0);
@@ -41,8 +41,8 @@
     --gb-background2: var(--gb-dark2);
     --gb-background3: var(--gb-dark3);
     --gb-background4: var(--gb-dark4);
-    --gb-foreground:  var(--gb-light1);
-    --gb-background:  var(--gb-dark0);
+    --gb-foreground: var(--gb-light1);
+    --gb-background: var(--gb-dark0);
     /*
      * From https://github.com/morhetz/gruvbox
      * (MIT/X11 License)
@@ -72,8 +72,8 @@
         --gb-background2: var(--gb-light2) !important;
         --gb-background3: var(--gb-light3) !important;
         --gb-background4: var(--gb-light4) !important;
-        --gb-foreground:  var(--gb-dark1) !important;
-        --gb-background:  var(--gb-light0) !important;
+        --gb-foreground: var(--gb-dark1) !important;
+        --gb-background: var(--gb-light0) !important;
     }
 }
 
@@ -123,8 +123,9 @@ input[type="radio"] {
     margin-right: 0.5em;
     margin-left: 0.15em;
 }
+
 input[type="radio"]:checked {
-background-color: var(--gb-foreground);
+    background-color: var(--gb-foreground);
 }
 
 input[type="button"] {
@@ -138,7 +139,9 @@ input:focus {
     outline: none;
 }
 
-a, a:visited, input[type="button"].link-button {
+a,
+a:visited,
+input[type="button"].link-button {
     display: inline;
     height: unset;
     border: none;
@@ -149,7 +152,19 @@ a, a:visited, input[type="button"].link-button {
     text-decoration: none;
 }
 
-a:hover, input[type="button"].link-button:hover {
+input[type="button"].link-button.not-available {
+    color: var(--gb-gray);
+    cursor: not-allowed;
+}
+
+input[type="button"].link-button.not-available:hover {
+    color: var(--gb-gray);
+    text-decoration: none;
+    cursor: not-allowed;
+}
+
+a:hover,
+input[type="button"].link-button:hover {
     color: var(--gb-blue-bright);
     text-decoration: underline;
 }
@@ -163,22 +178,25 @@ a:hover, input[type="button"].link-button:hover {
     column-gap: 1rem;
     border-bottom: var(--border-thickness) solid var(--gb-background2);
 }
+
 .post-container-left {
     grid-row: 1;
     grid-column: 1;
     user-select: none;
 }
+
 .post-container-right {
     grid-row: 1;
     grid-column: 2;
 }
+
 .post-container-bottom {
     grid-row: 2;
     grid-column: 1 / 3;
 }
 
 .post-score {
-    background-color: var(--gb-background2);
+    background-color: var(--gb-background1);
     color: var(--gb-foreground0);
     text-align: center;
     font-weight: bold;
@@ -186,20 +204,22 @@ a:hover, input[type="button"].link-button:hover {
     font-size: 0.8rem;
     border-top-right-radius: var(--border-radius);
     border-top-left-radius: var(--border-radius);
-    border: var(--border-thickness) solid var(--gb-background2);
+    border: var(--border-thickness) solid var(--gb-background1);
 }
 
-.post-thumbnail, .post-no-thumbnail {
+.post-thumbnail,
+.post-no-thumbnail {
     position: relative;
     box-sizing: border-box;
     width: var(--thumb-size);
     height: var(--thumb-size);
-    background-color: var(--gb-background2);
+    background-color: var(--gb-background1);
     overflow: hidden;
     border-bottom-right-radius: var(--border-radius);
     border-bottom-left-radius: var(--border-radius);
-    border: var(--border-thickness) solid var(--gb-background2);
+    border: var(--border-thickness) solid var(--gb-background1);
 }
+
 .post-thumbnail img {
     position: absolute;
     width: 100%;
@@ -210,22 +230,28 @@ a:hover, input[type="button"].link-button:hover {
     right: 0;
     bottom: 0;
 }
+
 .post-no-thumbnail {
     background-color: transparent;
 }
 
-.post-title, .post-title:visited {
+.post-title,
+.post-title:visited {
     font-size: 1.2rem;
     font-weight: bold;
     color: var(--gb-orange);
 }
+
 .post-title:hover {
     color: var(--gb-orange-bright);
     text-decoration: underline;
 }
-.post-title.sticky-post, .post-title.sticky-post:visited {
+
+.post-title.sticky-post,
+.post-title.sticky-post:visited {
     color: var(--gb-green);
 }
+
 .post-title.sticky-post:hover {
     color: var(--gb-green-bright);
     text-decoration: underline;
@@ -235,21 +261,26 @@ a:hover, input[type="button"].link-button:hover {
     font-size: 0.8rem;
     margin: 0.2rem 0;
 }
+
 .post-author::before {
     content: "u/";
 }
+
 .post-subreddit::before {
     content: "r/";
 }
+
 .post-nsfw-tag {
     color: var(--gb-red);
     font-weight: bold;
     cursor: help;
 }
+
 .post-nsfw-tag:hover::after {
     content: ": this content may be inappropriate for some";
     font-weight: normal;
 }
+
 .post-spoiler-tag {
     color: var(--gb-aqua);
     font-weight: bold;
@@ -263,21 +294,38 @@ a:hover, input[type="button"].link-button:hover {
 }
 
 .post-preview-container {
+    box-sizing: border-box;
+    width: 100%;
+    height: fit-content;
+    border: var(--border-thickness) solid var(--gb-background1);
+    border-radius: var(--border-radius);
+    border-bottom-right-radius: 2px;
+    background-color: var(--gb-background1);
+    margin-bottom: 1rem;
+}
+
+.post-preview-container-selftext {
+    box-sizing: border-box;
+    width: 100%;
+    height: fit-content;
+    resize: vertical;
+    overflow: auto;
+    padding: 0 1rem;
+}
+
+.post-preview-container-media {
     position: relative;
     display: block;
     width: 100%;
-    height: 66vh;
+    height: 75vh;
     overflow: hidden;
     resize: vertical;
-    box-sizing: border-box;
+    border-radius: inherit;
     min-height: 2rem;
-    border: var(--border-thickness) solid var(--gb-background2);
-    border-radius: var(--border-radius);
-    border-bottom-right-radius: 2px;
-    background-color: var(--gb-background2);
-    margin-bottom: 1rem;
+    min-width: 2rem;
 }
-.post-preview-container iframe {
+
+.post-preview-container-media iframe {
     position: absolute;
     display: block;
     top: 0;
@@ -291,12 +339,6 @@ a:hover, input[type="button"].link-button:hover {
     margin: 0;
     padding: 0;
 }
-.post-preview-container div.md {
-    height: 100%;
-    overflow-y: auto;
-    padding: 0 1rem;
-}
-
 
 #main-page {
     display: inline-block;
@@ -332,14 +374,18 @@ a:hover, input[type="button"].link-button:hover {
     text-align: right;
     margin: 1rem;
 }
-#pi-easter-egg, #pi-easter-egg:visited {
+
+#pi-easter-egg,
+#pi-easter-egg:visited {
     font-family: 'Times New Roman', Times, serif;
     font-size: 1.2rem;
     color: var(--gb-background1);
 }
+
 #pi-easter-egg:hover {
     color: var(--gb-blue-bright);
 }
+
 #pi-easter-egg:hover::before {
     content: "click me ";
     font-family: var(--font-family);

@@ -157,8 +157,10 @@ function makePostNode(post) {
         || post.thumbnail == "spoiler"
         || post.thumbnail == "nsfw"
         || post.thumbnail == "default"
-        || post.thumbnail == ""
+        || post.thumbnail === ""
     ) {
+        type = post.thumbnail;
+        if (post.thumbnail === "") { type = "default"; }
         let thumbnailContainer = document.createElement("div");
         thumbnailContainer.setAttribute(
             "class",
@@ -230,10 +232,16 @@ function makePostNode(post) {
 
     if (mediaContent !== null) {
         let togglePreviewBtn = document.createElement("input");
-        togglePreviewBtn.setAttribute("value", "preview");
+        togglePreviewBtn.setAttribute("value", "view");
         togglePreviewBtn.setAttribute("type", "button");
         togglePreviewBtn.setAttribute("class", "post-links link-button");
         togglePreviewBtn.setAttribute("onclick", "togglePreview(this)");
+        right.appendChild(togglePreviewBtn);
+    } else {
+        let togglePreviewBtn = document.createElement("input");
+        togglePreviewBtn.setAttribute("value", "view");
+        togglePreviewBtn.setAttribute("type", "button");
+        togglePreviewBtn.setAttribute("class", "post-links link-button not-available");
         right.appendChild(togglePreviewBtn);
     }
 
@@ -268,13 +276,22 @@ function makePostNode(post) {
 
 function getMediaContent(post) {
     if (typeof post.selftext_html == "string") {
-        return post.selftext_html;
+        let container = document.createElement("div");
+        container.setAttribute("class", "post-preview-container-selftext");
+        container.innerHTML = post.selftext_html
+        return container.outerHTML;
     }
     if (typeof post.secure_media_embed.content == "string") {
-        return post.secure_media_embed.content;
+        let container = document.createElement("div");
+        container.setAttribute("class", "post-preview-container-media");
+        container.innerHTML = post.secure_media_embed.content;
+        return container.outerHTML;
     }
     if (typeof post.media_embed.content == "string") {
-        return post.media_embed.content;
+        let container = document.createElement("div");
+        container.setAttribute("class", "post-preview-container-media");
+        container.innerHTML = post.media_embed.content;
+        return container.outerHTML;
     }
     return null;
 }
