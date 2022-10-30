@@ -10,7 +10,8 @@ const thisSort = getURLParam("sort", "hot");
 const thisTime = getURLParam("time", "all");
 const thisAfter = getURLParam("after", null);
 
-//Global Variables
+// Config params
+const itemsPerPage = "20"; // a string is better here for URL params
 
 // Cached query
 var subredditToFetch = thisSubreddit;
@@ -19,13 +20,11 @@ var timeToFetch = thisTime;
 
 // Cached element refs
 var timeSelectorRadio = null;
-var generatorDestination = null;
 
 // Main - to be run after the DOM is fully loaded
 window.addEventListener('DOMContentLoaded', (event) => {
     // Bind UI elements
     timeSelectorRadio = document.querySelector("#time-selector-group");
-    generatorDestination = document.querySelector("#generator-destination");
 
     // Initialize UI
     document.querySelector("#subreddit-name").value = thisSubreddit;
@@ -48,7 +47,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         thisTime,
         getURLParam("after", null)
     );
-    makeSubredditPage(url, generatorDestination);
+    makeSubredditPage(url, document.querySelector("#generator-destination"));
 });
 
 // UI controls
@@ -86,7 +85,7 @@ function navigateToQueriedPage() {
 
 // Make a URL that refers to a given query to the Reddit API
 function makeSubredditJsonURL(subreddit, sort = "hot", time = "all", after = null) {
-    let url = redditAPI + `r/${subreddit}/${sort}?raw_json=1`;
+    let url = redditAPI + `r/${subreddit}/${sort}?raw_json=1&limit=${itemsPerPage}`;
     if (sort == "controversial" || sort == "top") {
         url += `&t=${time}`;
     }
