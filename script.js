@@ -131,7 +131,7 @@ function makeSubredditPage(url, destination) {
             destination.appendChild(nextPage);
         })
         .catch(function (err) {
-            alert(err);
+            alert(err); //TODO: print a nice looking error message
         });
 }
 
@@ -147,35 +147,37 @@ function makePostNode(post) {
     let bottom = document.createElement("div");
     bottom.setAttribute("class", "post-container-bottom");
 
+    let thumbBox = document.createElement("div");
+    thumbBox.setAttribute("class", "post-thumb-box");
     let score = document.createElement("div");
     score.setAttribute("class", "post-score");
     score.appendChild(document.createTextNode(post.score.toLocaleString()));
-    left.appendChild(score);
-
+    thumbBox.appendChild(score);
+    let thumbnailContainer = document.createElement("div");
     if (
         post.thumbnail == "self"
         || post.thumbnail == "spoiler"
         || post.thumbnail == "nsfw"
         || post.thumbnail == "default"
+        || post.thumbnail == "image"
         || post.thumbnail === ""
     ) {
-        type = post.thumbnail;
+        let type = post.thumbnail;
         if (post.thumbnail === "") { type = "default"; }
-        let thumbnailContainer = document.createElement("div");
         thumbnailContainer.setAttribute(
             "class",
-            "post-no-thumbnail no-thumbnail-type-" + post.thumbnail
+            "post-no-thumbnail no-thumbnail-type-" + type
         );
-        left.appendChild(thumbnailContainer);
+        thumbBox.appendChild(thumbnailContainer);
     } else {
-        let thumbnailContainer = document.createElement("div");
         thumbnailContainer.setAttribute("class", "post-thumbnail");
         let thumbnail = document.createElement("img");
         thumbnail.setAttribute("src", post.thumbnail);
         thumbnail.setAttribute("draggable", "false");
         thumbnailContainer.appendChild(thumbnail);
-        left.appendChild(thumbnailContainer);
+        thumbBox.appendChild(thumbnailContainer);
     }
+    left.appendChild(thumbBox);
 
     let title = document.createElement("a");
     title.setAttribute("href", post.url);
@@ -230,33 +232,29 @@ function makePostNode(post) {
 
     let mediaContent = getMediaContent(post);
 
-    if (mediaContent !== null) {
-        let togglePreviewBtn = document.createElement("input");
-        togglePreviewBtn.setAttribute("value", "view");
-        togglePreviewBtn.setAttribute("type", "button");
+    let togglePreviewBtn = document.createElement("input");
+    togglePreviewBtn.setAttribute("value", "view");
+    togglePreviewBtn.setAttribute("type", "button");
+    if (mediaContent === null) {
+        togglePreviewBtn.setAttribute("class", "post-links link-button not-available");
+    } else {
         togglePreviewBtn.setAttribute("class", "post-links link-button");
         togglePreviewBtn.setAttribute("onclick", "togglePreview(this)");
-        right.appendChild(togglePreviewBtn);
-    } else {
-        let togglePreviewBtn = document.createElement("input");
-        togglePreviewBtn.setAttribute("value", "view");
-        togglePreviewBtn.setAttribute("type", "button");
-        togglePreviewBtn.setAttribute("class", "post-links link-button not-available");
-        right.appendChild(togglePreviewBtn);
     }
+    right.appendChild(togglePreviewBtn);
 
     let openRedditLnk = document.createElement("a");
-    openRedditLnk.appendChild(document.createTextNode("reddit"));
     openRedditLnk.setAttribute("href", redditURL + post.permalink);
     openRedditLnk.setAttribute("target", "_blank");
     openRedditLnk.setAttribute("class", "post-links");
+    openRedditLnk.appendChild(document.createTextNode("permalink"));
     right.appendChild(openRedditLnk);
 
-    let openCommentsLnk = document.createElement("a");
-    openCommentsLnk.setAttribute("href", "data:text/plain,Feature%20Coming%20Soon!");
-    openCommentsLnk.setAttribute("target", "_blank");
-    openCommentsLnk.setAttribute("class", "post-links");
-    openCommentsLnk.appendChild(document.createTextNode(`comments (${post.num_comments})`));
+    let openCommentsLnk = document.createElement("input");
+    openCommentsLnk.setAttribute("value", `comments (${post.num_comments})`);
+    openCommentsLnk.setAttribute("class", "post-links link-button");
+    openCommentsLnk.setAttribute("type", "button");
+    openCommentsLnk.setAttribute("onclick", `showComments('${redditURL + post.permalink}')`);
     right.appendChild(openCommentsLnk);
 
     if (mediaContent !== null) {
@@ -274,6 +272,12 @@ function makePostNode(post) {
     return container;
 }
 
+function showComments(url) {
+    if (confirm("Comment display coming soon! In the meantime, do you want to go to the Reddit version?")) {
+        window.location.href = url;
+    }
+}
+
 function getMediaContent(post) {
     if (typeof post.selftext_html == "string") {
         let container = document.createElement("div");
@@ -283,7 +287,7 @@ function getMediaContent(post) {
     }
     if (typeof post.secure_media_embed.content == "string") {
         let container = document.createElement("div");
-        container.setAttribute("class", "post-preview-container-media");
+        container.setAttribute("class", "post-preview-container-media secure-media");
         container.innerHTML = post.secure_media_embed.content;
         return container.outerHTML;
     }

@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap');
-
 :root {
     /* Background/Foreground Colors */
     --gb-light0: #fbf1c7;
@@ -48,13 +46,14 @@
      * (MIT/X11 License)
      */
 
-    /* Sizes */
-    --border-radius: 0.5rem;
+    /* Whole site parameters */
+    --border-radius: 3px;
     --thumb-size: 100px;
     --border-thickness: 2px;
+    --box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.3);
 
     /* Defaults */
-    --font-family: 'Oxygen', sans-serif;
+    --font-family: sans-serif;
     font-family: var(--font-family);
     font-size: 14px;
 }
@@ -98,15 +97,15 @@ input {
     background-color: var(--gb-foreground);
     color: var(--gb-background);
     font-family: var(--font-family);
-    border-radius: 9999px;
+    border-radius: var(--border-radius);
 }
 
 input[type="text"] {
     background-color: var(--gb-background2);
     color: var(--gb-foreground0);
-    height: 1.2rem;
+    height: 1.1rem;
     box-sizing: content-box;
-    padding: 0.1rem 0.5rem;
+    padding: 0.1rem 0.25rem;
 }
 
 input[type="radio"] {
@@ -115,7 +114,7 @@ input[type="radio"] {
     display: inline-block;
     height: 0.6em;
     aspect-ratio: 1 / 1;
-    border-radius: 50%;
+    border-radius: 100%;
     border: var(--border-thickness) solid var(--gb-foreground);
     background-color: var(--gb-background);
     cursor: pointer;
@@ -129,14 +128,18 @@ input[type="radio"]:checked {
 }
 
 input[type="button"] {
-    height: 1.2rem;
+    height: 1.1rem;
     cursor: pointer;
     box-sizing: content-box;
     padding: 0.1rem 0.5rem;
 }
 
-input:focus {
-    outline: none;
+input:focus,
+input[type="button"]:hover {
+    outline-style: solid;
+    outline-color: var(--gb-yellow);
+    outline-width: var(--border-thickness);
+    outline-offset: 0;
 }
 
 a,
@@ -167,6 +170,11 @@ a:hover,
 input[type="button"].link-button:hover {
     color: var(--gb-blue-bright);
     text-decoration: underline;
+    outline: none;
+}
+
+input[type="button"].link-button:focus {
+    outline: none;
 }
 
 .post-container {
@@ -195,44 +203,42 @@ input[type="button"].link-button:hover {
     grid-column: 1 / 3;
 }
 
-.post-score {
-    background-color: var(--gb-background1);
-    color: var(--gb-foreground0);
-    text-align: center;
-    font-weight: bold;
-    height: 1rem;
-    font-size: 0.8rem;
-    border-top-right-radius: var(--border-radius);
-    border-top-left-radius: var(--border-radius);
+.post-thumb-box {
+    box-sizing: border-box;
     border: var(--border-thickness) solid var(--gb-background1);
+    background-color: var(--gb-background1);
+    border-radius: var(--border-radius);
+    width: var(--thumb-size);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+.post-score {
+    text-align: center;
+    max-width: 100%;
+    font-size: 0.9rem;
+    padding: 0.2rem 0;
 }
 
 .post-thumbnail,
 .post-no-thumbnail {
-    position: relative;
-    box-sizing: border-box;
-    width: var(--thumb-size);
-    height: var(--thumb-size);
-    background-color: var(--gb-background1);
+    width: 100%;
     overflow: hidden;
-    border-bottom-right-radius: var(--border-radius);
-    border-bottom-left-radius: var(--border-radius);
-    border: var(--border-thickness) solid var(--gb-background1);
+    max-width: 100%;
 }
 
 .post-thumbnail img {
-    position: absolute;
+    border-radius: var(--border-radius);
+    display: block;
     width: 100%;
     height: auto;
-    margin: auto;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
 }
 
 .post-no-thumbnail {
-    background-color: transparent;
+    border-radius: var(--border-radius);
+    background-color: var(--gb-background1);
+    height: 5rem;
+    width: 100%;
 }
 
 .post-title,
@@ -275,7 +281,9 @@ input[type="button"].link-button:hover {
     font-weight: bold;
     cursor: help;
 }
-
+.post-nsfw-tag:hover {
+    color: var(--gb-red-bright);
+}
 .post-nsfw-tag:hover::after {
     content: ": this content may be inappropriate for some";
     font-weight: normal;
@@ -284,6 +292,14 @@ input[type="button"].link-button:hover {
 .post-spoiler-tag {
     color: var(--gb-aqua);
     font-weight: bold;
+    cursor: help;
+}
+.post-spoiler-tag:hover {
+    color: var(--gb-aqua-bright);
+}
+.post-spoiler-tag:hover::after {
+    content: ": this content may contain spoilers";
+    font-weight: normal;
 }
 
 .post-links {
@@ -299,9 +315,9 @@ input[type="button"].link-button:hover {
     height: fit-content;
     border: var(--border-thickness) solid var(--gb-background1);
     border-radius: var(--border-radius);
-    border-bottom-right-radius: 2px;
     background-color: var(--gb-background1);
     margin-bottom: 1rem;
+    box-shadow: var(--box-shadow);
 }
 
 .post-preview-container-selftext {
@@ -311,6 +327,7 @@ input[type="button"].link-button:hover {
     resize: vertical;
     overflow: auto;
     padding: 0 1rem;
+    border-radius: inherit;
 }
 
 .post-preview-container-media {
@@ -320,9 +337,8 @@ input[type="button"].link-button:hover {
     height: 75vh;
     overflow: hidden;
     resize: vertical;
+    min-height: 5rem;
     border-radius: inherit;
-    min-height: 2rem;
-    min-width: 2rem;
 }
 
 .post-preview-container-media iframe {
@@ -334,10 +350,10 @@ input[type="button"].link-button:hover {
     right: 0;
     width: 100%;
     height: 100%;
-    border-radius: inherit;
     border: none;
     margin: 0;
     padding: 0;
+    border-radius: inherit;
 }
 
 #main-page {
@@ -377,8 +393,9 @@ input[type="button"].link-button:hover {
 
 #pi-easter-egg,
 #pi-easter-egg:visited {
-    font-family: 'Times New Roman', Times, serif;
+    font-family: serif;
     font-size: 1.2rem;
+    padding: 1rem;
     color: var(--gb-background1);
 }
 
@@ -386,8 +403,47 @@ input[type="button"].link-button:hover {
     color: var(--gb-blue-bright);
 }
 
-#pi-easter-egg:hover::before {
-    content: "click me ";
-    font-family: var(--font-family);
-    font-size: 1rem;
+/* Reddit Markdown Styling */
+.md .md-spoiler-text {
+    background-color: var(--gb-aqua);
+    color: transparent;
+    cursor: none;
+    font-weight: bold;
+    border-radius: var(--border-radius);
+}
+
+.md .md-spoiler-text:hover {
+    background-color: transparent;
+    color: var(--gb-aqua);
+}
+
+.md hr {
+    height: var(--border-thickness);
+    background-color: var(--gb-foreground);
+    border: none;
+}
+
+.md table {
+    border-collapse: collapse;
+    border: var(--border-thickness) solid var(--gb-foreground);
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.md td, .md th {
+    padding: 0.1em 0.5em;
+    border-right: var(--border-thickness) solid var(--gb-foreground);
+    border-bottom: var(--border-thickness) dashed var(--gb-foreground);
+}
+
+.md code, .md pre {
+    font-family: monospace;
+    color: var(--gb-green);
+}
+
+.md blockquote {
+    display: block;
+    border-left: var(--border-thickness) solid var(--gb-foreground);
+    padding-left: 1rem;
+    margin-left: 0rem;
 }
