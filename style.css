@@ -1,46 +1,44 @@
 :root {
     /* Background/Foreground Colors */
-    --gb-light0: #fbf1c7;
-    --gb-light1: #ebdbb2;
-    --gb-light2: #d5c4a1;
-    --gb-light3: #bdae93;
-    --gb-light4: #a89984;
-    --gb-dark0: #282828;
-    --gb-dark1: #3c3836;
-    --gb-dark2: #504945;
-    --gb-dark3: #665c54;
-    --gb-dark4: #7c6f64;
+    --gruvbox-light0: #fbf1c7;
+    --gruvbox-light1: #ebdbb2;
+    --gruvbox-light2: #d5c4a1;
+    --gruvbox-light3: #bdae93;
+    --gruvbox-light4: #a89984;
+    --gruvbox-dark0: #282828;
+    --gruvbox-dark1: #3c3836;
+    --gruvbox-dark2: #504945;
+    --gruvbox-dark3: #665c54;
+    --gruvbox-dark4: #7c6f64;
     /* Basic Colors */
-    --gb-red: #cc241d;
-    --gb-green: #98971a;
-    --gb-yellow: #d79921;
-    --gb-blue: #458588;
-    --gb-purple: #b16286;
-    --gb-aqua: #689d6a;
-    --gb-gray: #928374;
-    --gb-orange: #d65d0e;
+    --gruvbox-red: #cc241d;
+    --gruvbox-green: #98971a;
+    --gruvbox-yellow: #d79921;
+    --gruvbox-blue: #458588;
+    --gruvbox-purple: #b16286;
+    --gruvbox-aqua: #689d6a;
+    --gruvbox-gray: #928374;
+    --gruvbox-orange: #d65d0e;
     /* Brighter/Washed Out Variants */
-    --gb-red-bright: #fb4934;
-    --gb-green-bright: #b8bb26;
-    --gb-yellow-bright: #fabd2f;
-    --gb-blue-bright: #83a598;
-    --gb-purple-bright: #d3869b;
-    --gb-aqua-bright: #8ec07c;
-    --gb-gray-bright: #a89984;
-    --gb-orange-bright: #fe8019;
+    --gruvbox-red-bright: #fb4934;
+    --gruvbox-green-bright: #b8bb26;
+    --gruvbox-yellow-bright: #fabd2f;
+    --gruvbox-blue-bright: #83a598;
+    --gruvbox-purple-bright: #d3869b;
+    --gruvbox-aqua-bright: #8ec07c;
+    --gruvbox-gray-bright: #a89984;
+    --gruvbox-orange-bright: #fe8019;
     /* Defaults (Dark Mode) */
-    --gb-foreground0: var(--gb-light0);
-    --gb-foreground1: var(--gb-light1);
-    --gb-foreground2: var(--gb-light2);
-    --gb-foreground3: var(--gb-light3);
-    --gb-foreground4: var(--gb-light4);
-    --gb-background0: var(--gb-dark0);
-    --gb-background1: var(--gb-dark1);
-    --gb-background2: var(--gb-dark2);
-    --gb-background3: var(--gb-dark3);
-    --gb-background4: var(--gb-dark4);
-    --gb-foreground: var(--gb-light1);
-    --gb-background: var(--gb-dark0);
+    --gruvbox-foreground0: var(--gruvbox-light0);
+    --gruvbox-foreground1: var(--gruvbox-light1);
+    --gruvbox-foreground2: var(--gruvbox-light2);
+    --gruvbox-foreground3: var(--gruvbox-light3);
+    --gruvbox-foreground4: var(--gruvbox-light4);
+    --gruvbox-background0: var(--gruvbox-dark0);
+    --gruvbox-background1: var(--gruvbox-dark1);
+    --gruvbox-background2: var(--gruvbox-dark2);
+    --gruvbox-background3: var(--gruvbox-dark3);
+    --gruvbox-background4: var(--gruvbox-dark4);
     /*
      * From https://github.com/morhetz/gruvbox
      * (MIT/X11 License)
@@ -61,18 +59,17 @@
 /* Light Mode Changes */
 @media (prefers-color-scheme: light) {
     :root {
-        --gb-foreground0: var(--gb-dark0) !important;
-        --gb-foreground1: var(--gb-dark1) !important;
-        --gb-foreground2: var(--gb-dark2) !important;
-        --gb-foreground3: var(--gb-dark3) !important;
-        --gb-foreground4: var(--gb-dark4) !important;
-        --gb-background0: var(--gb-light0) !important;
-        --gb-background1: var(--gb-light1) !important;
-        --gb-background2: var(--gb-light2) !important;
-        --gb-background3: var(--gb-light3) !important;
-        --gb-background4: var(--gb-light4) !important;
-        --gb-foreground: var(--gb-dark1) !important;
-        --gb-background: var(--gb-light0) !important;
+        --gruvbox-foreground0: var(--gruvbox-dark0) !important;
+        --gruvbox-foreground1: var(--gruvbox-dark1) !important;
+        --gruvbox-foreground2: var(--gruvbox-dark2) !important;
+        --gruvbox-foreground3: var(--gruvbox-dark3) !important;
+        --gruvbox-foreground4: var(--gruvbox-dark4) !important;
+        --gruvbox-background0: var(--gruvbox-light0) !important;
+        --gruvbox-background1: var(--gruvbox-light1) !important;
+        --gruvbox-background2: var(--gruvbox-light2) !important;
+        --gruvbox-background3: var(--gruvbox-light3) !important;
+        --gruvbox-background4: var(--gruvbox-light4) !important;
+        --box-shadow: 0 0 10px -2px rgba(255, 255, 255, 0.8);
     }
 }
 
@@ -81,8 +78,8 @@ html {
 }
 
 body {
-    background-color: var(--gb-background);
-    color: var(--gb-foreground);
+    background-color: var(--gruvbox-background0);
+    color: var(--gruvbox-foreground1);
     text-align: center;
 }
 
@@ -97,16 +94,16 @@ label {
 input {
     display: inline;
     border-radius: 0;
-    border: var(--border-thickness) solid var(--gb-foreground);
-    background-color: var(--gb-foreground);
-    color: var(--gb-background);
+    border: var(--border-thickness) solid var(--gruvbox-foreground1);
+    background-color: var(--gruvbox-foreground1);
+    color: var(--gruvbox-background0);
     font-family: var(--font-family);
     border-radius: var(--border-radius);
 }
 
 input[type="text"] {
-    background-color: var(--gb-background2);
-    color: var(--gb-foreground0);
+    background-color: var(--gruvbox-background2);
+    color: var(--gruvbox-foreground0);
     height: 1.1rem;
     box-sizing: content-box;
     padding: 0.1rem 0.25rem;
@@ -115,12 +112,13 @@ input[type="text"] {
 input[type="radio"] {
     appearance: none;
     -webkit-appearance: none;
+    -moz-appearance: none;
     display: inline-block;
     height: 0.6em;
     aspect-ratio: 1 / 1;
     border-radius: 100%;
-    border: var(--border-thickness) solid var(--gb-foreground);
-    background-color: var(--gb-background);
+    border: var(--border-thickness) solid var(--gruvbox-foreground1);
+    background-color: var(--gruvbox-background0);
     cursor: pointer;
     vertical-align: baseline;
     margin-right: 0.5em;
@@ -128,7 +126,7 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked {
-    background-color: var(--gb-foreground);
+    background-color: var(--gruvbox-foreground1);
 }
 
 input[type="button"] {
@@ -141,7 +139,7 @@ input[type="button"] {
 input:focus,
 input[type="button"]:hover {
     outline-style: solid;
-    outline-color: var(--gb-yellow);
+    outline-color: var(--gruvbox-yellow);
     outline-width: var(--border-thickness);
     outline-offset: 0;
 }
@@ -155,30 +153,37 @@ input[type="button"].link-button {
     padding: 0;
     border-radius: 0;
     background-color: transparent;
-    color: var(--gb-blue);
+    color: var(--gruvbox-blue);
     text-decoration: none;
 }
 
 input[type="button"].link-button.not-available {
-    color: var(--gb-gray);
+    color: var(--gruvbox-gray);
     cursor: not-allowed;
 }
 
 input[type="button"].link-button.not-available:hover {
-    color: var(--gb-gray);
+    color: var(--gruvbox-gray);
     text-decoration: none;
     cursor: not-allowed;
 }
 
 a:hover,
 input[type="button"].link-button:hover {
-    color: var(--gb-blue-bright);
+    color: var(--gruvbox-blue-bright);
     text-decoration: underline;
     outline: none;
 }
 
 input[type="button"].link-button:focus {
     outline: none;
+}
+
+::selection,
+::-moz-selection {
+    color: var(--gruvbox-dark0);
+    background-color: var(--gruvbox-purple-bright);
+    border-radius: var(--border-radius);
 }
 
 .post-container {
@@ -188,7 +193,7 @@ input[type="button"].link-button:focus {
     gap: 1rem;
     margin-top: 1rem;
     column-gap: 1rem;
-    border-bottom: var(--border-thickness) solid var(--gb-background2);
+    border-bottom: var(--border-thickness) solid var(--gruvbox-background2);
 }
 
 .post-container-left {
@@ -209,8 +214,8 @@ input[type="button"].link-button:focus {
 
 .post-thumb-box {
     box-sizing: border-box;
-    border: var(--border-thickness) solid var(--gb-background1);
-    background-color: var(--gb-background1);
+    border: var(--border-thickness) solid var(--gruvbox-background1);
+    background-color: var(--gruvbox-background1);
     border-radius: var(--border-radius);
     width: var(--thumb-size);
     overflow: hidden;
@@ -240,7 +245,7 @@ input[type="button"].link-button:focus {
 
 .post-no-thumbnail {
     border-radius: var(--border-radius);
-    background-color: var(--gb-background1);
+    background-color: var(--gruvbox-background1);
     height: 5rem;
     width: 100%;
 }
@@ -249,21 +254,21 @@ input[type="button"].link-button:focus {
 .post-title:visited {
     font-size: 1.2rem;
     font-weight: bold;
-    color: var(--gb-orange);
+    color: var(--gruvbox-orange);
 }
 
 .post-title:hover {
-    color: var(--gb-orange-bright);
+    color: var(--gruvbox-orange-bright);
     text-decoration: underline;
 }
 
 .post-title.sticky-post,
 .post-title.sticky-post:visited {
-    color: var(--gb-green);
+    color: var(--gruvbox-green);
 }
 
 .post-title.sticky-post:hover {
-    color: var(--gb-green-bright);
+    color: var(--gruvbox-green-bright);
     text-decoration: underline;
 }
 
@@ -281,26 +286,30 @@ input[type="button"].link-button:focus {
 }
 
 .post-nsfw-tag {
-    color: var(--gb-red);
+    color: var(--gruvbox-red);
     font-weight: bold;
     cursor: help;
 }
+
 .post-nsfw-tag:hover {
-    color: var(--gb-red-bright);
+    color: var(--gruvbox-red-bright);
 }
+
 .post-nsfw-tag:hover::after {
     content: ": this content may be inappropriate for some";
     font-weight: normal;
 }
 
 .post-spoiler-tag {
-    color: var(--gb-aqua);
+    color: var(--gruvbox-aqua);
     font-weight: bold;
     cursor: help;
 }
+
 .post-spoiler-tag:hover {
-    color: var(--gb-aqua-bright);
+    color: var(--gruvbox-aqua-bright);
 }
+
 .post-spoiler-tag:hover::after {
     content: ": this content may contain spoilers";
     font-weight: normal;
@@ -313,17 +322,19 @@ input[type="button"].link-button:focus {
     font-size: 1rem;
 }
 
+.post-comments-container,
 .post-preview-container {
     box-sizing: border-box;
     width: 100%;
     height: fit-content;
-    border: var(--border-thickness) solid var(--gb-background1);
+    border: var(--border-thickness) solid var(--gruvbox-background1);
     border-radius: var(--border-radius);
-    background-color: var(--gb-background1);
+    background-color: var(--gruvbox-background1);
     margin-bottom: 1rem;
     box-shadow: var(--box-shadow);
 }
 
+.post-preview-container-rawhtml,
 .post-preview-container-selftext {
     box-sizing: border-box;
     width: 100%;
@@ -332,6 +343,11 @@ input[type="button"].link-button:focus {
     overflow: auto;
     padding: 0 1rem;
     border-radius: inherit;
+}
+
+.post-preview-container-rawhtml {
+    border: var(--border-thickness) solid var(--gruvbox-purple);
+    border-radius: var(--border-radius);
 }
 
 .post-preview-container-media {
@@ -344,6 +360,7 @@ input[type="button"].link-button:focus {
     min-height: 5rem;
     border-radius: inherit;
 }
+
 
 .post-preview-container-media iframe {
     position: absolute;
@@ -362,13 +379,13 @@ input[type="button"].link-button:focus {
 
 #main-page {
     display: inline-block;
-    width: clamp(30rem, 80%, 100rem);
+    width: clamp(25rem, 80%, 100rem);
     text-align: left;
 }
 
 #navigator {
     text-align: center;
-    border-bottom: var(--border-thickness) solid var(--gb-background2);
+    border-bottom: var(--border-thickness) solid var(--gruvbox-background2);
     padding: 0.25rem 0 1rem 0;
     margin-bottom: 1rem;
     font-size: 0.9rem;
@@ -405,16 +422,16 @@ input[type="button"].link-button:focus {
     font-family: serif;
     font-size: 1.2rem;
     padding: 1rem;
-    color: var(--gb-background1);
+    color: var(--gruvbox-background1);
 }
 
 #pi-easter-egg:hover {
-    color: var(--gb-blue-bright);
+    color: var(--gruvbox-blue-bright);
 }
 
 /* Reddit Markdown Styling */
 .md .md-spoiler-text {
-    background-color: var(--gb-aqua);
+    background-color: var(--gruvbox-aqua);
     color: transparent;
     cursor: none;
     font-weight: bold;
@@ -423,36 +440,38 @@ input[type="button"].link-button:focus {
 
 .md .md-spoiler-text:hover {
     background-color: transparent;
-    color: var(--gb-aqua);
+    color: var(--gruvbox-aqua);
 }
 
 .md hr {
     height: var(--border-thickness);
-    background-color: var(--gb-foreground);
+    background-color: var(--gruvbox-foreground1);
     border: none;
 }
 
 .md table {
     border-collapse: collapse;
-    border: var(--border-thickness) solid var(--gb-foreground);
+    border: var(--border-thickness) solid var(--gruvbox-foreground1);
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
 
-.md td, .md th {
-    padding: 0.1em 0.5em;
-    border-right: var(--border-thickness) solid var(--gb-foreground);
-    border-bottom: var(--border-thickness) dashed var(--gb-foreground);
+.md td,
+.md th {
+    padding: 0.2em 0.5em;
+    border-right: var(--border-thickness) solid var(--gruvbox-foreground1);
+    border-bottom: var(--border-thickness) dotted var(--gruvbox-foreground1);
 }
 
-.md code, .md pre {
+.md code,
+.md pre {
     font-family: monospace;
-    color: var(--gb-green);
+    color: var(--gruvbox-green);
 }
 
 .md blockquote {
     display: block;
-    border-left: var(--border-thickness) solid var(--gb-foreground);
+    border-left: var(--border-thickness) solid var(--gruvbox-foreground1);
     padding-left: 1rem;
     margin-left: 0rem;
 }

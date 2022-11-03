@@ -231,30 +231,30 @@ function makePostNode(post) {
 
     let mediaContent = getMediaContent(post);
 
-    let togglePreviewBtn = document.createElement("input");
-    togglePreviewBtn.setAttribute("value", "view");
-    togglePreviewBtn.setAttribute("type", "button");
+    let togglePreview = document.createElement("input");
+    togglePreview.setAttribute("value", "view");
+    togglePreview.setAttribute("type", "button");
     if (mediaContent === null) {
-        togglePreviewBtn.setAttribute("class", "post-links link-button not-available");
+        togglePreview.setAttribute("class", "post-links link-button not-available");
     } else {
-        togglePreviewBtn.setAttribute("class", "post-links link-button");
-        togglePreviewBtn.setAttribute("onclick", "togglePreview(this)");
+        togglePreview.setAttribute("class", "post-links link-button");
+        togglePreview.setAttribute("onclick", "togglePreview(this)");
     }
-    right.appendChild(togglePreviewBtn);
+    right.appendChild(togglePreview);
 
-    let openRedditLnk = document.createElement("a");
-    openRedditLnk.setAttribute("href", redditURL + post.permalink);
-    openRedditLnk.setAttribute("target", "_blank");
-    openRedditLnk.setAttribute("class", "post-links");
-    openRedditLnk.appendChild(document.createTextNode("permalink"));
-    right.appendChild(openRedditLnk);
+    let openReddit = document.createElement("a");
+    openReddit.setAttribute("href", redditURL + post.permalink);
+    openReddit.setAttribute("target", "_blank");
+    openReddit.setAttribute("class", "post-links");
+    openReddit.appendChild(document.createTextNode("permalink"));
+    right.appendChild(openReddit);
 
-    let openCommentsLnk = document.createElement("input");
-    openCommentsLnk.setAttribute("value", `comments (${post.num_comments})`);
-    openCommentsLnk.setAttribute("class", "post-links link-button");
-    openCommentsLnk.setAttribute("type", "button");
-    openCommentsLnk.setAttribute("onclick", `showComments('${redditURL + post.permalink}')`);
-    right.appendChild(openCommentsLnk);
+    let toggleComments = document.createElement("input");
+    toggleComments.setAttribute("value", `comments (${post.num_comments})`);
+    toggleComments.setAttribute("class", "post-links link-button");
+    toggleComments.setAttribute("type", "button");
+    toggleComments.setAttribute("onclick", `toggleComments(this)`);
+    right.appendChild(toggleComments);
 
     if (mediaContent !== null) {
         let previewContainer = document.createElement("div");
@@ -265,39 +265,69 @@ function makePostNode(post) {
         bottom.appendChild(previewContainer);
     }
 
+    let commentsContainer = document.createElement("div");
+    commentsContainer.setAttribute("class", "post-comments-container");
+    commentsContainer.setAttribute("style", "display:none;");
+    commentsContainer.setAttribute("data-show", "hide");
+    commentsContainer.setAttribute("data-source", b64EncodeUnicode(redditURL + post.permalink));
+    bottom.appendChild(commentsContainer);
+
     container.appendChild(left);
     container.appendChild(right);
     container.appendChild(bottom);
     return container;
 }
 
-function showComments(url) {
-    if (confirm("Comment display coming soon! In the meantime, do you want to go to the Reddit version?")) {
-        window.location.href = url;
+// TODO: Toggle the comments window
+function toggleComments(spawningButton) {
+    let commentsContainer = spawningButton
+        .parentElement.parentElement.querySelector(".post-comments-container");
+    if (commentsContainer.dataset.show != "show") {
+        commentsContainer.dataset.show = "show";
+        commentsContainer.style.display = "block";
+        commentsContainer.appendChild(document.createTextNode(unicodeDecodeB64(commentsContainer.dataset.source)));
+    } else {
+        commentsContainer.dataset.show = "hide";
+        commentsContainer.style.display = "none";
+        commentsContainer.innerHTML = "";
     }
 }
 
+// Get an embeddable media object
 function getMediaContent(post) {
     if (typeof post.selftext_html == "string") {
         let container = document.createElement("div");
         container.setAttribute("class", "post-preview-container-selftext");
         container.innerHTML = post.selftext_html
         return container.outerHTML;
+    } else if (typeof post.secure_media_embed.content == "string") {
+        return manageArbitraryMediaEmbed(post.secure_media_embed.content);
+    } else if (typeof post.media_embed.content == "string") {
+        return manageArbitraryMediaEmbed(post.media_embed.content);
+    } else {
+        return null;
     }
-    if (typeof post.secure_media_embed.content == "string") {
-        let container = document.createElement("div");
-        container.setAttribute("class", "post-preview-container-media secure-media");
-        container.innerHTML = post.secure_media_embed.content;
-        return container.outerHTML;
-    }
-    if (typeof post.media_embed.content == "string") {
-        let container = document.createElement("div");
-        container.setAttribute("class", "post-preview-container-media");
-        container.innerHTML = post.media_embed.content;
-        return container.outerHTML;
-    }
-    return null;
 }
+
+// Manage arbitrary HTML embeds from reddit API
+function manageArbitraryMediaEmbed(embedCode) {
+    let htmlDoc = (new DOMParser()).parseFromString(embedCode, 'text/html');
+    if (htmlDoc.childElementCount == 1) {
+        let child = htmlDoc.children[0];
+        if (child.tagName == "iframe") {
+            let container = document.createElement("div");
+            container.setAttribute("class", "post-preview-container-media");
+            container.appendChild(child);
+            return container.outerHTML;
+        }
+    }
+    let container = document.createElement("div");
+    container.setAttribute("class", "post-preview-container-rawhtml");
+    htmlDoc.childNodes.forEach(element => { container.appendChild(element); });
+    return container.outerHTML;
+}
+
+
 
 // Toggle the preview window
 function togglePreview(spawningButton) {
