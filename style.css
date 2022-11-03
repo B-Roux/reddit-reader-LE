@@ -386,18 +386,17 @@ input[type="button"].link-button:focus {
     overflow-y: auto;
 }
 
+.comment-note {
+    margin: 1rem;
+}
+
 .comment-container {
     border-left: var(--border-thickness) solid var(--gruvbox-background3);
     margin: 0.25rem 0;
     padding: 0 1rem;
 }
 
-/* TODO: This could be annoying - maybe change it? */
-.post-comments-container:hover .comment-container {
-    color: var(--gruvbox-gray);
-}
-.post-comments-container:hover .comment-container:hover {
-    color: var(--gruvbox-foreground1);
+.comment-container:hover {
     border-color: var(--gruvbox-yellow);
 }
 

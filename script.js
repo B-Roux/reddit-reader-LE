@@ -1,7 +1,12 @@
 // URLs/APIs/etc.
 const redditURL = "https://www.reddit.com/";
 const redditAPI = "https://api.reddit.com/";
-const readerURL = "file:///C:/Users/baren/source/repos/birddit/index.html";
+
+// For quick debugging
+//const readerURL = "file:///C:/Users/baren/source/repos/birddit/index.html";
+
+// Actual site
+const readerURL = "https://reddit-reader.projects.b-roux.com/"
 
 // Cache the URL parameters
 const URLParams = new URLSearchParams(window.location.search);
@@ -367,6 +372,7 @@ function makeCommentsSection(url, destination) {
             note.style.display = "none";
         })
         .catch(function (err) {
+            note.innerHTML = "";
             note.appendChild(document.createTextNode(err));
         });
 }
@@ -380,7 +386,7 @@ function makeThreadRecursive(parent, depth=0) {
 
     let container = document.createElement("div");
     container.setAttribute("class", "comment-container");
-    container.innerHTML = parent.data.body_html;
+    container.appendChild(makeCommentNode(parent.data));
 
     try {
         parent.data.replies.data.children.forEach(child => {
@@ -405,6 +411,14 @@ function makeThreadRecursive(parent, depth=0) {
         container.appendChild(subContainer);
     }
 
+    return container;
+}
+
+function makeCommentNode(comment) {
+    let container = document.createElement("div");
+    let body = document.createElement("div");
+    body.innerHTML = comment.body_html;
+    container.appendChild(body);
     return container;
 }
 
