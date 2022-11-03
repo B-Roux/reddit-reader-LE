@@ -406,6 +406,10 @@ input[type="button"].link-button:focus {
     text-align: left;
 }
 
+#error-container h1 {
+    color: var(--gruvbox-red);
+}
+
 #navigator {
     text-align: center;
     border-bottom: var(--border-thickness) solid var(--gruvbox-background2);

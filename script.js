@@ -135,7 +135,46 @@ function makeSubredditPage(url, destination) {
             destination.appendChild(nextPage);
         })
         .catch(function (err) {
-            alert(err); //TODO: print a nice looking error message
+            let errorContainer = document.createElement("div");
+            errorContainer.setAttribute("id", "error-container");
+            let header = document.createElement("h1");
+            header.appendChild(document.createTextNode("There was a problem..."));
+            errorContainer.appendChild(header);
+            let description = document.createElement("p");
+            description.appendChild(document.createTextNode(
+                "We couldn't find what you're looking for. Try this:"
+            ));
+            errorContainer.appendChild(description);
+            let troubleshoot = document.createElement("ul");
+            let firefoxETP = document.createElement("li");
+            firefoxETP.appendChild(document.createTextNode(
+                "If you are using FireFox, ensure that Enhanced Tracking Protection " +
+                "is off for this site. This setting prevents us from interacting " +
+                "with the Reddit API."
+            ));
+            troubleshoot.appendChild(firefoxETP);
+            let subredditName = document.createElement("li");
+            subredditName.appendChild(document.createTextNode(
+                "Ensure that the subreddit name is typed in correctly - were you " +
+                `trying to reach "r/${thisSubreddit}"?`
+            ));
+            troubleshoot.appendChild(subredditName);
+            let redditStatus = document.createElement("li");
+            redditStatus.appendChild(document.createTextNode(
+                "Ensure that Reddit is currently working (redditstatus.com)."
+            ));
+            troubleshoot.appendChild(redditStatus);
+            errorContainer.appendChild(troubleshoot);
+            let resolution = document.createElement("p");
+            resolution.appendChild(document.createTextNode(
+                "If this does not work or apply to you, we may be experiencing technical " +
+                "difficulties. We apologize."
+            ));
+            errorContainer.appendChild(resolution);
+            let errorInformation = document.createElement("code");
+            errorInformation.appendChild(document.createTextNode(err));
+            errorContainer.appendChild(errorInformation);
+            destination.appendChild(errorContainer);
         });
 }
 
