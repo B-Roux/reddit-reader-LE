@@ -282,21 +282,6 @@ function makePostNode(post) {
     return container;
 }
 
-// TODO: Toggle the comments window
-function toggleComments(spawningButton) {
-    let commentsContainer = spawningButton
-        .parentElement.parentElement.querySelector(".post-comments-container");
-    if (commentsContainer.dataset.show != "show") {
-        commentsContainer.dataset.show = "show";
-        commentsContainer.style.display = "block";
-        commentsContainer.appendChild(document.createTextNode(unicodeDecodeB64(commentsContainer.dataset.source)));
-    } else {
-        commentsContainer.dataset.show = "hide";
-        commentsContainer.style.display = "none";
-        commentsContainer.innerHTML = "";
-    }
-}
-
 // Get an embeddable media object
 function getMediaContent(post) {
     if (typeof post.selftext_html == "string") {
@@ -315,19 +300,19 @@ function getMediaContent(post) {
 
 // Manage arbitrary HTML embeds from reddit API
 function manageArbitraryMediaEmbed(embedCode) {
-    let htmlDoc = (new DOMParser()).parseFromString(embedCode, 'text/html');
-    if (htmlDoc.childElementCount == 1) {
-        let child = htmlDoc.children[0];
-        if (child.tagName == "iframe") {
-            let container = document.createElement("div");
-            container.setAttribute("class", "post-preview-container-media");
-            container.appendChild(child);
-            return container.outerHTML;
-        }
-    }
+    let dummyElement = document.createElement("div");
+    dummyElement.innerHTML = embedCode;
+
     let container = document.createElement("div");
-    container.setAttribute("class", "post-preview-container-rawhtml");
-    htmlDoc.childNodes.forEach(element => { container.appendChild(element); });
+
+    if (dummyElement.childNodes.length == 1 && dummyElement.childNodes[0].tagName == "IFRAME") {
+        container.setAttribute("class", "post-preview-container-media");
+        container.appendChild(dummyElement.childNodes[0]);
+    } else {
+        container.setAttribute("class", "post-preview-container-rawhtml");
+        htmlDoc.childNodes.forEach(element => { container.appendChild(element); });
+    }
+
     return container.outerHTML;
 }
 
@@ -346,6 +331,81 @@ function togglePreview(spawningButton) {
         previewContainer.style.display = "none";
         previewContainer.innerHTML = "";
     }
+}
+
+// TODO: Toggle the comments window
+function toggleComments(spawningButton) {
+    let commentsContainer = spawningButton
+        .parentElement.parentElement.querySelector(".post-comments-container");
+    if (commentsContainer.dataset.show != "show") {
+        commentsContainer.dataset.show = "show";
+        commentsContainer.style.display = "block";
+        makeCommentsSection(unicodeDecodeB64(commentsContainer.dataset.source), commentsContainer);
+    } else {
+        commentsContainer.dataset.show = "hide";
+        commentsContainer.style.display = "none";
+        commentsContainer.innerHTML = "";
+    }
+}
+
+var dbgResult = null;
+
+function makeCommentsSection(url, destination) {
+    let noteElement = document.createElement("span");
+    noteElement.setAttribute("class", "comment-note");
+    noteElement.appendChild(document.createTextNode("loading..."))
+    destination.appendChild(noteElement);
+    let note = destination.querySelector(".comment-note");
+    fetchJSON(url)
+        .then(function (data) {
+            data[1].data.children.forEach(child => {
+                let childThread = makeThreadRecursive(child);
+                if (childThread !== null) {
+                    destination.appendChild(childThread);
+                }
+            });
+            note.style.display = "none";
+        })
+        .catch(function (err) {
+            note.appendChild(document.createTextNode(err));
+        });
+}
+
+function makeThreadRecursive(parent, depth=0) {
+    const maxDepth = 8;
+
+    if (depth > maxDepth) {
+        return null;
+    }
+
+    let container = document.createElement("div");
+    container.setAttribute("class", "comment-container");
+    container.innerHTML = parent.data.body_html;
+
+    try {
+        parent.data.replies.data.children.forEach(child => {
+            let childThread = makeThreadRecursive(child, depth + 1);
+            if (childThread !== null) {
+                container.appendChild(childThread);
+            }
+        });
+    } catch {
+        // Thread ends, nothing needs to be done :-)
+    }
+
+    // If there are more than $maxDepth comments in a thread, overflow to Reddit
+    if (depth+1 > maxDepth) { 
+        let subContainer = document.createElement("div");
+        subContainer.setAttribute("class", "comment-container");
+        let continueThread = document.createElement("a");
+        continueThread.setAttribute("target", "_blank");
+        continueThread.setAttribute("href", `${redditURL}${parent.data.permalink}`);
+        continueThread.appendChild(document.createTextNode("continue thread on reddit"));
+        subContainer.appendChild(continueThread);
+        container.appendChild(subContainer);
+    }
+
+    return container;
 }
 
 // Get and parse the JSON from an API request
