@@ -269,7 +269,11 @@ function makePostNode(post) {
     commentsContainer.setAttribute("class", "post-comments-container");
     commentsContainer.setAttribute("style", "display:none;");
     commentsContainer.setAttribute("data-show", "hide");
-    commentsContainer.setAttribute("data-source", b64EncodeUnicode(redditURL + post.permalink));
+    commentsContainer.setAttribute(
+        "data-source", b64EncodeUnicode(
+            `${redditAPI}${post.permalink}?raw_json=1`
+        )
+    );
     bottom.appendChild(commentsContainer);
 
     container.appendChild(left);
