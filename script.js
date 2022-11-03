@@ -417,7 +417,20 @@ function makeCommentsSection(url, destination) {
 }
 
 function makeThreadRecursive(parent, depth=0) {
-    const maxDepth = 8;
+    const maxDepth = 2;
+
+    let redditLinkPosted = false;
+    function makeMoreCommentsLink() {
+        if (!redditLinkPosted) {
+            let continueThread = document.createElement("a");
+            continueThread.setAttribute("target", "_blank");
+            continueThread.setAttribute("href", `${redditURL}${parent.data.permalink}`);
+            continueThread.setAttribute("class", "comments-continue-link");
+            continueThread.appendChild(document.createTextNode("continue thread"));
+            container.appendChild(continueThread);
+            redditLinkPosted = true;
+        }
+    }
 
     if (depth > maxDepth) {
         return null;
@@ -429,9 +442,13 @@ function makeThreadRecursive(parent, depth=0) {
 
     try {
         parent.data.replies.data.children.forEach(child => {
-            let childThread = makeThreadRecursive(child, depth + 1);
-            if (childThread !== null) {
-                container.appendChild(childThread);
+            if (child.kind == "more") {
+                makeMoreCommentsLink();
+            } else {
+                let childThread = makeThreadRecursive(child, depth + 1);
+                if (childThread !== null) {
+                    container.appendChild(childThread);
+                }
             }
         });
     } catch {
@@ -440,14 +457,7 @@ function makeThreadRecursive(parent, depth=0) {
 
     // If there are more than $maxDepth comments in a thread, overflow to Reddit
     if (depth+1 > maxDepth) { 
-        let subContainer = document.createElement("div");
-        subContainer.setAttribute("class", "comment-container");
-        let continueThread = document.createElement("a");
-        continueThread.setAttribute("target", "_blank");
-        continueThread.setAttribute("href", `${redditURL}${parent.data.permalink}`);
-        continueThread.appendChild(document.createTextNode("continue thread on reddit"));
-        subContainer.appendChild(continueThread);
-        container.appendChild(subContainer);
+        makeMoreCommentsLink();
     }
 
     return container;

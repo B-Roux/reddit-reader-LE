@@ -400,6 +400,15 @@ input[type="button"].link-button:focus {
     border-color: var(--gruvbox-yellow);
 }
 
+.comments-continue-link {
+    color: var(--gruvbox-purple);
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+.comments-continue-link:hover {
+    color: var(--gruvbox-purple-bright);
+}
+
 #main-page {
     display: inline-block;
     width: clamp(25rem, 80%, 100rem);
