@@ -354,13 +354,11 @@ function manageArbitraryMediaEmbed(embedCode) {
         container.appendChild(dummyElement.childNodes[0]);
     } else {
         container.setAttribute("class", "post-preview-container-rawhtml");
-        htmlDoc.childNodes.forEach(element => { container.appendChild(element); });
+        dummyElement.childNodes.forEach(element => { container.appendChild(element); });
     }
 
     return container.outerHTML;
 }
-
-
 
 // Toggle the preview window
 function togglePreview(spawningButton) {
