@@ -241,13 +241,13 @@ function makePostNode(post) {
     let author = document.createElement("a");
     author.setAttribute("class", "post-author");
     author.setAttribute("href", redditURL + `u/${post.author}`);
-    author.appendChild(document.createTextNode(post.author));
+    author.appendChild(document.createTextNode(`u/${post.author}`));
     byline.appendChild(author);
     byline.appendChild(document.createTextNode(" to "));
     let subreddit = document.createElement("a");
     subreddit.setAttribute("class", "post-subreddit");
     subreddit.setAttribute("href", makeReaderSubredditURL(post.subreddit));
-    subreddit.appendChild(document.createTextNode(post.subreddit));
+    subreddit.appendChild(document.createTextNode(`r/${post.subreddit}`));
     byline.appendChild(subreddit);
     let millisSincePosted = Math.round(Date.now() - post.created * 1000);
     byline.appendChild(document.createTextNode(` ${formatDuration(millisSincePosted)} ago`));
@@ -393,7 +393,7 @@ function toggleComments(spawningButton) {
 var dbgResult = null;
 
 function makeCommentsSection(url, destination) {
-    let noteElement = document.createElement("span");
+    let noteElement = document.createElement("div");
     noteElement.setAttribute("class", "comment-note");
     noteElement.appendChild(document.createTextNode("loading..."))
     destination.appendChild(noteElement);
@@ -414,25 +414,19 @@ function makeCommentsSection(url, destination) {
         });
 }
 
-function makeThreadRecursive(parent, depth=0) {
-    const maxDepth = 2;
+function makeThreadRecursive(parent, depth = 1, maxDepth = 8) {
 
-    let redditLinkPosted = false;
-    function makeMoreCommentsLink() {
-        if (!redditLinkPosted) {
-            let continueThread = document.createElement("a");
-            continueThread.setAttribute("target", "_blank");
-            continueThread.setAttribute("href", `${redditURL}${parent.data.permalink}`);
-            continueThread.setAttribute("class", "comments-continue-link");
-            continueThread.appendChild(document.createTextNode("continue thread"));
-            container.appendChild(continueThread);
-            redditLinkPosted = true;
-        }
+    function makeMoreCommentsLink(message = "continue thread") {
+        let continueThread = document.createElement("a");
+        continueThread.setAttribute("target", "_blank");
+        continueThread.setAttribute("href", `${redditURL}${parent.data.permalink}`);
+        continueThread.setAttribute("class", "comments-continue-link");
+        continueThread.appendChild(document.createTextNode(message));
+        return continueThread;
     }
 
-    if (depth > maxDepth) {
-        return null;
-    }
+    if (parent.kind == "more") { return makeMoreCommentsLink(); }
+    if (depth > maxDepth) { return null; }
 
     let container = document.createElement("div");
     container.setAttribute("class", "comment-container");
@@ -441,28 +435,26 @@ function makeThreadRecursive(parent, depth=0) {
     try {
         parent.data.replies.data.children.forEach(child => {
             if (child.kind == "more") {
-                makeMoreCommentsLink();
+                container.appendChild(makeMoreCommentsLink());
+                return container;
             } else {
                 let childThread = makeThreadRecursive(child, depth + 1);
-                if (childThread !== null) {
-                    container.appendChild(childThread);
-                }
+                if (childThread !== null) { container.appendChild(childThread); }    
+                if (depth + 1 > maxDepth) { container.appendChild(makeMoreCommentsLink()); }
             }
+            
         });
-    } catch {
-        // Thread ends, nothing needs to be done :-)
-    }
-
-    // If there are more than $maxDepth comments in a thread, overflow to Reddit
-    if (depth+1 > maxDepth) { 
-        makeMoreCommentsLink();
-    }
-
+    } catch { } //Just end the thread :-)
     return container;
 }
 
+// TODO: Make this prettier :/
 function makeCommentNode(comment) {
     let container = document.createElement("div");
+    let author = document.createElement("div");
+    author.setAttribute("style", "color: var(--gruvbox-blue); font-weight: bold;");
+    author.appendChild(document.createTextNode(comment.author));
+    container.appendChild(author);
     let body = document.createElement("div");
     body.innerHTML = comment.body_html;
     container.appendChild(body);
