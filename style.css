@@ -372,10 +372,18 @@ input[type="button"].link-button:focus {
 .post-comments-container {
     box-sizing: border-box;
     padding: 0 1rem;
-    height: 75vh;
+    max-height: 75vh;
     min-height: 3rem;
     resize: vertical;
     overflow-y: auto;
+}
+
+/* 
+    kind of hacky, but ignore the max height
+    if the element is resized
+*/
+.post-comments-container[style*="height"] {
+    max-height: unset; 
 }
 
 .comment-note {
