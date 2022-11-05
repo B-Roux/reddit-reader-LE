@@ -354,7 +354,6 @@ input[type="button"].link-button:focus {
     border-radius: inherit;
 }
 
-
 .post-preview-container-media iframe {
     position: absolute;
     display: block;
@@ -373,7 +372,7 @@ input[type="button"].link-button:focus {
 .post-comments-container {
     box-sizing: border-box;
     padding: 0 1rem;
-    max-height: 75vh;
+    height: 75vh;
     min-height: 3rem;
     resize: vertical;
     overflow-y: auto;
@@ -397,6 +396,11 @@ input[type="button"].link-button:focus {
 .comments-continue-link {
     font-weight: bold;
     font-size: 0.8rem;
+}
+
+.not-affiliated::after {
+    content: "*";
+    color: var(--gruvbox-red);
 }
 
 #main-page {
@@ -437,6 +441,29 @@ input[type="button"].link-button:focus {
     margin-top: 1rem;
 }
 
+#quick-links {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    opacity: 0.5;
+    width: fit-content;
+}
+
+#quick-links::after {
+    display: block;
+    color: var(--gruvbox-red);
+    font-size: 0.75em;
+    margin-top: 0.5em;
+    content: "*I am not affiliated with these entities";
+}
+
+#quick-links:hover {
+    opacity: 1;
+}
+
+#quick-links a {
+    color: var(--gruvbox-foreground4);
+}
+
 /* Pi easter egg */
 #pi-easter-egg-cont {
     text-align: right;
@@ -453,6 +480,12 @@ input[type="button"].link-button:focus {
 
 #pi-easter-egg:hover {
     color: var(--gruvbox-blue-bright);
+}
+
+#pi-easter-egg:hover::before {
+    font-family: var(--font-family);
+    font-size: 0.75rem;
+    content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ ";
 }
 
 /* Reddit Markdown Styling */
@@ -504,6 +537,12 @@ input[type="button"].link-button:focus {
     border-left: var(--border-thickness) solid var(--gruvbox-foreground1);
     padding-left: 1rem;
     margin-left: 0rem;
+    font-style: italic;
+}
+
+.md blockquote em,
+.md blockquote i {
+    font-style: normal;
 }
 
 .md img {
