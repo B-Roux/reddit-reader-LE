@@ -489,10 +489,14 @@ input[type="button"].link-button:focus {
     border-bottom: var(--border-thickness) dotted var(--gruvbox-foreground1);
 }
 
-.md code,
-.md pre {
-    font-family: monospace;
+.md th {
+    border-bottom: var(--border-thickness) solid var(--gruvbox-foreground1);
+}
+
+.md code, .md pre {
     color: var(--gruvbox-green);
+    font-family: monospace;
+    white-space: pre-wrap;
 }
 
 .md blockquote {
