@@ -194,7 +194,7 @@ function makePostNode(post) {
     thumbBox.setAttribute("class", "post-thumb-box");
     let score = document.createElement("div");
     score.setAttribute("class", "post-score");
-    score.appendChild(document.createTextNode(post.score.toLocaleString()));
+    score.appendChild(document.createTextNode(formatScore(post.score, post.upvote_ratio)));
     thumbBox.appendChild(score);
     let thumbnailContainer = document.createElement("div");
     if (
@@ -276,7 +276,7 @@ function makePostNode(post) {
     let mediaContent = getMediaContent(post);
 
     let togglePreview = document.createElement("input");
-    togglePreview.setAttribute("value", "view");
+    togglePreview.setAttribute("value", "preview");
     togglePreview.setAttribute("type", "button");
     if (mediaContent === null) {
         togglePreview.setAttribute("class", "post-links link-button not-available");
@@ -328,22 +328,37 @@ function makePostNode(post) {
 
 // Get an embeddable media object
 function getMediaContent(post) {
-    if (typeof post.selftext_html == "string") {
+    if (typeof post.selftext_html == "string") { // First, try to get the self text
         let container = document.createElement("div");
         container.setAttribute("class", "post-preview-container-selftext");
         container.innerHTML = post.selftext_html
         return container.outerHTML;
-    } else if (typeof post.secure_media_embed.content == "string") {
+    } else if (typeof post.secure_media_embed.content == "string") { // Then, check for a secure embed
         return manageArbitraryMediaEmbed(post.secure_media_embed.content);
-    } else if (typeof post.media_embed.content == "string") {
+    } else if (typeof post.media_embed.content == "string") { // Then check for a non-secure embed
         return manageArbitraryMediaEmbed(post.media_embed.content);
-    } else {
+    } else try { // Then check for any kind of preview image
+        let container = document.createElement("div");
+        container.setAttribute("class", "post-preview-container-imgs");
+        post.preview.images.forEach(child => {
+            let image = document.createElement("img");
+            image.setAttribute("src", child.source.url);
+            if (child.source.width > child.source.height) {
+                image.setAttribute("class", "landscape");
+            } else {
+                image.setAttribute("class", "portrait");
+            }
+            container.appendChild(image);
+        });
+        return container.outerHTML;
+    } catch { // Then admit defeat :(
         return null;
     }
 }
 
-// Manage arbitrary HTML embeds from reddit API
+// Manage arbitrary raw HTML embeds
 function manageArbitraryMediaEmbed(embedCode) {
+    // HTML parser trick
     let dummyElement = document.createElement("div");
     dummyElement.innerHTML = embedCode;
 
@@ -389,8 +404,6 @@ function toggleComments(spawningButton) {
         commentsContainer.innerHTML = "";
     }
 }
-
-var dbgResult = null;
 
 function makeCommentsSection(url, destination) {
     let noteElement = document.createElement("div");
@@ -484,20 +497,42 @@ function fetchJSON(url) {
 
 // Format millisecond duration as a human-readable string
 function formatDuration(millis) {
+    function pluralize(amount, unit) {
+        if (amount == '1') {
+            return `1 ${unit}`;
+        } else {
+            return `${amount} ${unit}s`;
+        }
+    }
     let seconds = millis / 1000;
     if (seconds < 60) {
-        return `${Math.round(seconds)} seconds`;
+        return pluralize(Math.round(seconds).toString(), 'second');
     }
     let minutes = seconds / 60;
     if (minutes < 60) {
-        return `${Math.round(minutes)} minutes`;
+        return pluralize(Math.round(minutes).toString(), 'minute');
     }
     let hours = minutes / 60;
     if (hours < 24) {
-        return `${Math.round(hours)} hours`;
+        return pluralize(Math.round(hours).toString(), 'hour');
     }
     let days = hours / 24;
-    return `${Math.round(days)} days`;
+    if (days < 365) {
+        return pluralize(Math.round(days).toString(), 'day');
+    }
+    let years = days / 365.25;
+    return pluralize(Math.round(years).toString(), 'year');
+}
+
+function formatScore(score, ratio) {
+    let scoreFmt;
+    let ratioFmt = Math.round(ratio*100).toString();
+    if (score > 1000) {
+        scoreFmt = Math.round(score/1000).toString() + "K";
+    } else {
+        scoreFmt = score.toString();
+    }
+    return `${scoreFmt} (${ratioFmt}%)`
 }
 
 // Get URL parameters or a default if they do not exist
