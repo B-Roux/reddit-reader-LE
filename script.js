@@ -6,7 +6,7 @@ const redditAPI = "https://api.reddit.com/";
 //const readerURL = "file:///C:/Users/baren/source/repos/birddit/index.html";
 
 // Actual site
-const readerURL = "https://reddit-reader.projects.b-roux.com/"
+const readerURL = "https://reddit-reader.pages.b-roux.com/"
 
 // Cache the URL parameters
 const URLParams = new URLSearchParams(window.location.search);
