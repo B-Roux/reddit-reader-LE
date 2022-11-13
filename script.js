@@ -3,10 +3,10 @@ const redditURL = "https://www.reddit.com/";
 const redditAPI = "https://api.reddit.com/";
 
 // For quick debugging
-//const readerURL = "file:///C:/Users/baren/source/repos/birddit/index.html";
+const readerURL = "file:///C:/Users/baren/source/repos/birddit/index.html";
 
 // Actual site
-const readerURL = "https://reddit-reader.pages.b-roux.com/"
+//const readerURL = "https://reddit-reader.pages.b-roux.com/"
 
 // Cache the URL parameters
 const URLParams = new URLSearchParams(window.location.search);
@@ -89,8 +89,14 @@ function navigateToQueriedPage() {
 // Functionality
 
 // Make a URL that refers to a given query to the Reddit API
-function makeSubredditJsonURL(subreddit, sort = "hot", time = "all", after = null) {
-    let url = redditAPI + `r/${subreddit}/${sort}?raw_json=1&limit=${itemsPerPage}`;
+function makeSubredditJsonURL(
+    subreddit, 
+    sort = "hot", 
+    time = "all", 
+    after = null
+) {
+    let url = redditAPI +
+        `r/${subreddit}/${sort}?raw_json=1&limit=${itemsPerPage}`;
     if (sort == "controversial" || sort == "top") {
         url += `&t=${time}`;
     }
@@ -101,7 +107,12 @@ function makeSubredditJsonURL(subreddit, sort = "hot", time = "all", after = nul
 }
 
 // Make a URL that refers to a given query on this reader
-function makeReaderSubredditURL(subreddit, sort = "hot", time = "all", after = null) {
+function makeReaderSubredditURL(
+    subreddit, 
+    sort = "hot", 
+    time = "all", 
+    after = null
+) {
     let url = readerURL + `?subreddit=${subreddit}&sort=${sort}`;
     if (sort == "controversial" || sort == "top") {
         url += `&time=${time}`;
@@ -148,9 +159,10 @@ function makeSubredditPage(url, destination) {
             let troubleshoot = document.createElement("ul");
             let firefoxETP = document.createElement("li");
             firefoxETP.appendChild(document.createTextNode(
-                "If you are using FireFox, ensure that Enhanced Tracking Protection " +
-                "is off for this site. This setting prevents us from interacting " +
-                "with the Reddit API."
+                "If you are using FireFox (including FireFox Focus as " +
+                "a content blocker), ensure that Enhanced Tracking " +
+                "Protection is off for this site. This setting prevents " +
+                "us from interacting with the Reddit API."
             ));
             troubleshoot.appendChild(firefoxETP);
             let subredditName = document.createElement("li");
@@ -167,7 +179,8 @@ function makeSubredditPage(url, destination) {
             errorContainer.appendChild(troubleshoot);
             let resolution = document.createElement("p");
             resolution.appendChild(document.createTextNode(
-                "If this does not work or apply to you, we may be experiencing technical " +
+                "If this does not work or apply to you, " +
+                "we may be experiencing technical " +
                 "difficulties. We apologize."
             ));
             errorContainer.appendChild(resolution);
@@ -194,7 +207,9 @@ function makePostNode(post) {
     thumbBox.setAttribute("class", "post-thumb-box");
     let score = document.createElement("div");
     score.setAttribute("class", "post-score");
-    score.appendChild(document.createTextNode(formatScore(post.score, post.upvote_ratio)));
+    score.appendChild(
+        document.createTextNode(formatScore(post.score, post.upvote_ratio))
+    );
     thumbBox.appendChild(score);
     let thumbnailContainer = document.createElement("div");
     if (
@@ -250,7 +265,9 @@ function makePostNode(post) {
     subreddit.appendChild(document.createTextNode(`r/${post.subreddit}`));
     byline.appendChild(subreddit);
     let millisSincePosted = Math.round(Date.now() - post.created * 1000);
-    byline.appendChild(document.createTextNode(` ${formatDuration(millisSincePosted)} ago`));
+    byline.appendChild(
+        document.createTextNode(` ${formatDuration(millisSincePosted)} ago`)
+    );
     if (post.edited) {
         byline.appendChild(document.createTextNode("*"));
     }
@@ -273,7 +290,7 @@ function makePostNode(post) {
     }
     right.appendChild(byline);
 
-    let mediaContent = getMediaContent(post);
+    let mediaContent = getMediaContent(post); // ./embedder.js
 
     let togglePreview = document.createElement("input");
     togglePreview.setAttribute("value", "preview");
@@ -304,7 +321,7 @@ function makePostNode(post) {
         let previewContainer = document.createElement("div");
         previewContainer.setAttribute("class", "post-preview-container");
         previewContainer.setAttribute("style", "display:none;");
-        previewContainer.setAttribute("data-show", "hide");
+        previewContainer.setAttribute("data-show", "false");
         previewContainer.setAttribute("data-content", b64EncodeUnicode(mediaContent));
         bottom.appendChild(previewContainer);
     }
@@ -312,7 +329,7 @@ function makePostNode(post) {
     let commentsContainer = document.createElement("div");
     commentsContainer.setAttribute("class", "post-comments-container");
     commentsContainer.setAttribute("style", "display:none;");
-    commentsContainer.setAttribute("data-show", "hide");
+    commentsContainer.setAttribute("data-show", "false");
     commentsContainer.setAttribute(
         "data-source", b64EncodeUnicode(
             `${redditAPI}${post.permalink}?raw_json=1`
@@ -326,65 +343,18 @@ function makePostNode(post) {
     return container;
 }
 
-// Get an embeddable media object
-function getMediaContent(post) {
-    if (typeof post.selftext_html == "string") { // First, try to get the self text
-        let container = document.createElement("div");
-        container.setAttribute("class", "post-preview-container-selftext");
-        container.innerHTML = post.selftext_html
-        return container.outerHTML;
-    } else if (typeof post.secure_media_embed.content == "string") { // Then, check for a secure embed
-        return manageArbitraryMediaEmbed(post.secure_media_embed.content);
-    } else if (typeof post.media_embed.content == "string") { // Then check for a non-secure embed
-        return manageArbitraryMediaEmbed(post.media_embed.content);
-    } else try { // Then check for any kind of preview image
-        let container = document.createElement("div");
-        container.setAttribute("class", "post-preview-container-imgs");
-        post.preview.images.forEach(child => {
-            let image = document.createElement("img");
-            image.setAttribute("src", child.source.url);
-            if (child.source.width > child.source.height) {
-                image.setAttribute("class", "landscape");
-            } else {
-                image.setAttribute("class", "portrait");
-            }
-            container.appendChild(image);
-        });
-        return container.outerHTML;
-    } catch { // Then admit defeat :(
-        return null;
-    }
-}
-
-// Manage arbitrary raw HTML embeds
-function manageArbitraryMediaEmbed(embedCode) {
-    // HTML parser trick
-    let dummyElement = document.createElement("div");
-    dummyElement.innerHTML = embedCode;
-
-    let container = document.createElement("div");
-
-    if (dummyElement.childNodes.length == 1 && dummyElement.childNodes[0].tagName == "IFRAME") {
-        container.setAttribute("class", "post-preview-container-media");
-        container.appendChild(dummyElement.childNodes[0]);
-    } else {
-        container.setAttribute("class", "post-preview-container-rawhtml");
-        dummyElement.childNodes.forEach(element => { container.appendChild(element); });
-    }
-
-    return container.outerHTML;
-}
-
 // Toggle the preview window
 function togglePreview(spawningButton) {
     let previewContainer = spawningButton
         .parentElement.parentElement.querySelector(".post-preview-container");
-    if (previewContainer.dataset.show != "show") {
-        previewContainer.dataset.show = "show";
+    if (previewContainer.dataset.show != "true") {
+        previewContainer.dataset.show = "true";
         previewContainer.style.display = "block";
-        previewContainer.innerHTML = unicodeDecodeB64(previewContainer.dataset.content);
+        previewContainer.innerHTML = unicodeDecodeB64(
+            previewContainer.dataset.content
+        );
     } else {
-        previewContainer.dataset.show = "hide";
+        previewContainer.dataset.show = "false";
         previewContainer.style.display = "none";
         previewContainer.innerHTML = "";
     }
@@ -394,12 +364,15 @@ function togglePreview(spawningButton) {
 function toggleComments(spawningButton) {
     let commentsContainer = spawningButton
         .parentElement.parentElement.querySelector(".post-comments-container");
-    if (commentsContainer.dataset.show != "show") {
-        commentsContainer.dataset.show = "show";
+    if (commentsContainer.dataset.show != "true") {
+        commentsContainer.dataset.show = "true";
         commentsContainer.style.display = "block";
-        makeCommentsSection(unicodeDecodeB64(commentsContainer.dataset.source), commentsContainer);
+        makeCommentsSection(
+            unicodeDecodeB64(commentsContainer.dataset.source),
+            commentsContainer
+        );
     } else {
-        commentsContainer.dataset.show = "hide";
+        commentsContainer.dataset.show = "false";
         commentsContainer.style.display = "none";
         commentsContainer.innerHTML = "";
     }
@@ -452,10 +425,14 @@ function makeThreadRecursive(parent, depth = 1, maxDepth = 8) {
                 return container;
             } else {
                 let childThread = makeThreadRecursive(child, depth + 1);
-                if (childThread !== null) { container.appendChild(childThread); }    
-                if (depth + 1 > maxDepth) { container.appendChild(makeMoreCommentsLink()); }
+                if (childThread !== null) {
+                    container.appendChild(childThread);
+                }
+                if (depth + 1 > maxDepth) {
+                    container.appendChild(makeMoreCommentsLink());
+                }
             }
-            
+
         });
     } catch { } //Just end the thread :-)
     return container;
@@ -493,8 +470,6 @@ function fetchJSON(url) {
     });
 }
 
-// Utility
-
 // Format millisecond duration as a human-readable string
 function formatDuration(millis) {
     function pluralize(amount, unit) {
@@ -526,9 +501,9 @@ function formatDuration(millis) {
 
 function formatScore(score, ratio) {
     let scoreFmt;
-    let ratioFmt = Math.round(ratio*100).toString();
+    let ratioFmt = Math.round(ratio * 100).toString();
     if (score > 1000) {
-        scoreFmt = Math.round(score/1000).toString() + "K";
+        scoreFmt = Math.round(score / 1000).toString() + "K";
     } else {
         scoreFmt = score.toString();
     }
