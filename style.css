@@ -388,7 +388,7 @@ input[type="button"].link-button:focus {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     border: var(--border-thickness) solid var(--gruvbox-foreground1);
-    height: calc(100% - 0.50001rem); /* Account for bottom margin */
+    height: calc(100% - 0.5rem - 0.5px); /* Account for bottom margin */
     width: auto;
     image-rendering: optimizeQuality;
     cursor: zoom-in;
@@ -411,14 +411,19 @@ input[type="button"].link-button:focus {
     max-height: unset; 
 }
 
+button.toggle-thread-view {
+    width: 1.5rem;
+}
+
 .comment-note {
     padding: 1rem 0;
     text-align: center;
+    cursor: wait;
 }
 
 .comment-container {
     border-left: var(--border-thickness) solid var(--gruvbox-background3);
-    margin: 0.25rem 0;
+    margin: 0.75rem 0;
     padding: 0 1rem;
 }
 
@@ -431,8 +436,23 @@ input[type="button"].link-button:focus {
     font-size: 0.8rem;
 }
 
+.comment-author {
+    font-size: 0.95rem;
+}
+
+.comment-byline {
+    font-size: 0.8rem;
+    color: var(--gruvbox-gray);
+}
+
+.comment-body {
+    margin: 0.5rem 0;
+}
+
 .not-affiliated::after {
-    content: "*";
+    font-size: 0.7em;
+    vertical-align: top;
+    content: "\2020";
     color: var(--gruvbox-red);
 }
 
@@ -475,27 +495,31 @@ input[type="button"].link-button:focus {
 }
 
 #quick-links {
-    margin-top: 1rem;
+    margin-top: 2rem;
     font-size: 0.8rem;
-    opacity: 0.5;
-    width: fit-content;
+    text-align: center;
 }
 
-#quick-links::after {
-    display: block;
-    color: var(--gruvbox-red);
-    font-size: 0.75em;
-    margin-top: 0.5em;
-    content: "*I am not affiliated with these entities";
+#quick-links-body {
+    columns: 2;
 }
 
-#quick-links:hover {
-    opacity: 1;
-}
-
-#quick-links a {
+#quick-links-body a {
     color: var(--gruvbox-foreground4);
 }
+
+#quick-links-note {
+    margin-top: 0.5em;
+    color: var(--gruvbox-red);
+}
+
+#quick-links-note::before {
+    font-size: 0.7em;
+    vertical-align: top;
+    content: "\2020";
+    color: var(--gruvbox-red);
+}
+
 
 /* Pi easter egg */
 #pi-easter-egg-cont {
@@ -522,6 +546,7 @@ input[type="button"].link-button:focus {
 }
 
 /* Reddit Markdown Styling */
+
 .md .md-spoiler-text {
     background-color: var(--gruvbox-aqua);
     color: transparent;
@@ -533,6 +558,35 @@ input[type="button"].link-button:focus {
 .md .md-spoiler-text:hover {
     background-color: transparent;
     color: var(--gruvbox-aqua);
+}
+
+
+.md * {
+    margin: 0;
+}
+
+.md h1 {
+    font-size: 1.25em;
+}
+
+.md h2 {
+    font-size: 1.2em;
+}
+
+.md h3 {
+    font-size: 1.15em;
+}
+
+.md h4 {
+    font-size: 1.1em;
+}
+
+.md h5 {
+    font-size: 1.05em;
+}
+
+.md h6 {
+    font-size: 1em;
 }
 
 .md hr {
@@ -553,6 +607,11 @@ input[type="button"].link-button:focus {
     padding: 0.2em 0.5em;
     border-right: var(--border-thickness) solid var(--gruvbox-foreground1);
     border-bottom: var(--border-thickness) dotted var(--gruvbox-foreground1);
+}
+
+.md p + p {
+    margin-top: 0.5em;
+    text-indent: 1em;
 }
 
 .md th {

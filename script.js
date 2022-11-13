@@ -2,12 +2,6 @@
 const redditURL = "https://www.reddit.com/";
 const redditAPI = "https://api.reddit.com/";
 
-// For quick debugging
-//const readerURL = "file:///C:/Users/baren/source/repos/birddit/index.html";
-
-// Actual site
-const readerURL = "https://reddit-reader.pages.b-roux.com/"
-
 // Cache the URL parameters
 const URLParams = new URLSearchParams(window.location.search);
 const thisSubreddit = getURLParam("subreddit", "all");
@@ -112,8 +106,8 @@ function makeReaderSubredditURL(
     sort = "hot", 
     time = "all", 
     after = null
-) {
-    let url = readerURL + `?subreddit=${subreddit}&sort=${sort}`;
+) { //TODO
+    let url = `./index.html?subreddit=${subreddit}&sort=${sort}`;
     if (sort == "controversial" || sort == "top") {
         url += `&time=${time}`;
     }
@@ -343,41 +337,6 @@ function makePostNode(post) {
     return container;
 }
 
-// Toggle the preview window
-function togglePreview(spawningButton) {
-    let previewContainer = spawningButton
-        .parentElement.parentElement.querySelector(".post-preview-container");
-    if (previewContainer.dataset.show != "true") {
-        previewContainer.dataset.show = "true";
-        previewContainer.style.display = "block";
-        previewContainer.innerHTML = unicodeDecodeB64(
-            previewContainer.dataset.content
-        );
-    } else {
-        previewContainer.dataset.show = "false";
-        previewContainer.style.display = "none";
-        previewContainer.innerHTML = "";
-    }
-}
-
-// TODO: Toggle the comments window
-function toggleComments(spawningButton) {
-    let commentsContainer = spawningButton
-        .parentElement.parentElement.querySelector(".post-comments-container");
-    if (commentsContainer.dataset.show != "true") {
-        commentsContainer.dataset.show = "true";
-        commentsContainer.style.display = "block";
-        makeCommentsSection(
-            unicodeDecodeB64(commentsContainer.dataset.source),
-            commentsContainer
-        );
-    } else {
-        commentsContainer.dataset.show = "false";
-        commentsContainer.style.display = "none";
-        commentsContainer.innerHTML = "";
-    }
-}
-
 function makeCommentsSection(url, destination) {
     let noteElement = document.createElement("div");
     noteElement.setAttribute("class", "comment-note");
@@ -441,13 +400,28 @@ function makeThreadRecursive(parent, depth = 1, maxDepth = 8) {
 // TODO: Make this prettier :/
 function makeCommentNode(comment) {
     let container = document.createElement("div");
-    let author = document.createElement("div");
-    author.setAttribute("style", "color: var(--gruvbox-blue); font-weight: bold;");
-    author.appendChild(document.createTextNode(comment.author));
+
+    let author = document.createElement("a");
+    author.setAttribute("class", "comment-author");
+    author.setAttribute("href", redditURL + `u/${comment.author}`);
+    author.appendChild(document.createTextNode(`u/${comment.author}`));
     container.appendChild(author);
+
+    let byline = document.createElement("div");
+    byline.setAttribute("class", "comment-byline");
+    let millisSincePosted = Math.round(Date.now() - comment.created * 1000);
+    byline.appendChild(
+        document.createTextNode(
+            `${pluralize(comment.score, "point")} ${formatDuration(millisSincePosted)} ago`
+        )
+    );
+    container.appendChild(byline);
+
     let body = document.createElement("div");
+    body.setAttribute("class", "comment-body");
     body.innerHTML = comment.body_html;
     container.appendChild(body);
+
     return container;
 }
 
@@ -470,15 +444,17 @@ function fetchJSON(url) {
     });
 }
 
+// Make something plural if there's not exactly one of it
+function pluralize(amount, unit) {
+    if (amount == '1') {
+        return `1 ${unit}`;
+    } else {
+        return `${amount} ${unit}s`;
+    }
+}
+
 // Format millisecond duration as a human-readable string
 function formatDuration(millis) {
-    function pluralize(amount, unit) {
-        if (amount == '1') {
-            return `1 ${unit}`;
-        } else {
-            return `${amount} ${unit}s`;
-        }
-    }
     let seconds = millis / 1000;
     if (seconds < 60) {
         return pluralize(Math.round(seconds).toString(), 'second');

@@ -34,14 +34,16 @@ function getProvidedEmbed(providedEmbedCode) {
     return container.outerHTML;
 }
 
+// TODO
 function makeMediaEmbed (domain, url) {
     switch(domain) {
         case "i.redd.it":
-            makeMediaEmbed
+            return undefined;
     }
 }
 
 
+// TODO: Remove this
 function makeMediaEmbed_OLD (post) {
     try { // Then check for any kind of preview image
         let container = document.createElement("div");
@@ -62,20 +64,4 @@ function makeMediaEmbed_OLD (post) {
     } catch { // admit defeat :(
         return null;
     }
-}
-
-// Toggle maximizing an image
-function toggleFit(source) {
-    if (source.dataset.fit == "vertical") {
-        source.style.width = "100%";
-        source.style.height = "auto";
-        source.dataset.fit = "horizontal";
-        source.style.cursor = "zoom-out";
-    } else {
-        source.style.width = "";
-        source.style.height = "";
-        source.style.cursor = "";
-        source.dataset.fit = "vertical";
-    }
-
 }
