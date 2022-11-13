@@ -1,6 +1,6 @@
 // URLs/APIs/etc.
-const redditURL = "https://www.reddit.com/";
-const redditAPI = "https://api.reddit.com/";
+const redditURL = "https://www.reddit.com";
+const redditAPI = "https://api.reddit.com";
 
 // Cache the URL parameters
 const URLParams = new URLSearchParams(window.location.search);
@@ -90,7 +90,7 @@ function makeSubredditJsonURL(
     after = null
 ) {
     let url = redditAPI +
-        `r/${subreddit}/${sort}?raw_json=1&limit=${itemsPerPage}`;
+        `/r/${subreddit}/${sort}?raw_json=1&limit=${itemsPerPage}`;
     if (sort == "controversial" || sort == "top") {
         url += `&t=${time}`;
     }
@@ -249,7 +249,7 @@ function makePostNode(post) {
     byline.appendChild(document.createTextNode("submitted by "));
     let author = document.createElement("a");
     author.setAttribute("class", "post-author");
-    author.setAttribute("href", redditURL + `u/${post.author}`);
+    author.setAttribute("href", redditURL + `/u/${post.author}`);
     author.appendChild(document.createTextNode(`u/${post.author}`));
     byline.appendChild(author);
     byline.appendChild(document.createTextNode(" to "));
@@ -362,12 +362,17 @@ function makeCommentsSection(url, destination) {
 function makeThreadRecursive(parent, depth = 1, maxDepth = 8) {
 
     function makeMoreCommentsLink(message = "continue thread") {
+        let subContainer = document.createElement("div");
+        subContainer.setAttribute("class", "comment-container");
+
         let continueThread = document.createElement("a");
         continueThread.setAttribute("target", "_blank");
         continueThread.setAttribute("href", `${redditURL}${parent.data.permalink}`);
         continueThread.setAttribute("class", "comments-continue-link");
         continueThread.appendChild(document.createTextNode(message));
-        return continueThread;
+
+        subContainer.appendChild(continueThread);
+        return subContainer;
     }
 
     if (parent.kind == "more") { return makeMoreCommentsLink(); }
@@ -403,16 +408,26 @@ function makeCommentNode(comment) {
 
     let author = document.createElement("a");
     author.setAttribute("class", "comment-author");
-    author.setAttribute("href", redditURL + `u/${comment.author}`);
+    author.setAttribute("target", "_blank");
+    author.setAttribute("href", redditURL + `/u/${comment.author}`);
     author.appendChild(document.createTextNode(`u/${comment.author}`));
     container.appendChild(author);
 
     let byline = document.createElement("div");
     byline.setAttribute("class", "comment-byline");
     let millisSincePosted = Math.round(Date.now() - comment.created * 1000);
+    let controversial = ""
+    if (comment.controversiality > 0) {
+        controversial = "\u2020"
+    }
+    let edited = ""
+    if (comment.edited) {
+        edited = "*"
+    }
     byline.appendChild(
         document.createTextNode(
-            `${pluralize(comment.score, "point")} ${formatDuration(millisSincePosted)} ago`
+            `${pluralize(comment.score, "point")}${controversial} ` +
+            `${formatDuration(millisSincePosted)} ago${edited}`
         )
     );
     container.appendChild(byline);
@@ -421,6 +436,24 @@ function makeCommentNode(comment) {
     body.setAttribute("class", "comment-body");
     body.innerHTML = comment.body_html;
     container.appendChild(body);
+
+    let links = document.createElement("div");
+    links.setAttribute("class", "comment-links");
+
+    let permalink = document.createElement("a");
+    permalink.setAttribute("href", redditURL + comment.permalink);
+    permalink.setAttribute("target", "_blank");
+    permalink.appendChild(document.createTextNode("permalink"));
+    links.appendChild(permalink);
+
+    let context = document.createElement("a");
+    const contextDepth = "8";
+    context.setAttribute("href", `${redditURL}${comment.permalink}?context=${contextDepth}`);
+    context.setAttribute("target", "_blank");
+    context.appendChild(document.createTextNode("context"));
+    links.appendChild(context);
+
+    container.appendChild(links);
 
     return container;
 }

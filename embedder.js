@@ -11,7 +11,7 @@ function getMediaContent(post) {
         return getProvidedEmbed(post.media_embed.content);
     } else { // Then try to make an embed ourselves
         return makeMediaEmbed_OLD(post);
-        return makeMediaEmbed(post.domain, post.url);
+        return makeMediaEmbed(post.url);
     }
 }
 
@@ -35,9 +35,26 @@ function getProvidedEmbed(providedEmbedCode) {
 }
 
 // TODO
-function makeMediaEmbed (domain, url) {
-    switch(domain) {
+function makeMediaEmbed (url_) {
+    let url = new URL(url_);
+
+    /* Quick Reference
+        href:     http://username:password@host.com:80/pa/th?q=val#hash
+        protocol: http
+        username:        username
+        password:                 password
+        host:                              host.com:80
+        hostname:                          host.com
+        port:                                       80
+        pathname:                                     /pa/th
+        search:                                              q=val
+        hash:                                                     #hash
+    */
+
+    switch(url.hostname) {
         case "i.redd.it":
+            return undefined;
+        case "reddit.com":
             return undefined;
     }
 }

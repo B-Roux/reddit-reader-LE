@@ -433,7 +433,7 @@ button.toggle-thread-view {
 
 .comments-continue-link {
     font-weight: bold;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
 }
 
 .comment-author {
@@ -447,6 +447,13 @@ button.toggle-thread-view {
 
 .comment-body {
     margin: 0.5rem 0;
+}
+
+.comment-links a {
+    display: inline-block;
+    margin-right: 0.5em;
+    font-weight: bold;
+    font-size: 0.75em;
 }
 
 .not-affiliated::after {
@@ -562,7 +569,7 @@ button.toggle-thread-view {
 
 
 .md * {
-    margin: 0;
+    margin: 0.5rem 0;
 }
 
 .md h1 {
@@ -607,11 +614,6 @@ button.toggle-thread-view {
     padding: 0.2em 0.5em;
     border-right: var(--border-thickness) solid var(--gruvbox-foreground1);
     border-bottom: var(--border-thickness) dotted var(--gruvbox-foreground1);
-}
-
-.md p + p {
-    margin-top: 0.5em;
-    text-indent: 1em;
 }
 
 .md th {
