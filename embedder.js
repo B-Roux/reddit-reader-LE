@@ -1,3 +1,7 @@
+/*
+ * Content embed logic
+ */
+
 // Get an embeddable media object
 function getMediaContent(post) {
     if (typeof post.selftext_html == "string" && post.selftext_html != "") {
@@ -35,7 +39,7 @@ function getProvidedEmbed(providedEmbedCode) {
 }
 
 // TODO
-function makeMediaEmbed (url_) {
+function makeMediaEmbed(url_) {
     let url = new URL(url_);
 
     /* Quick Reference
@@ -51,7 +55,7 @@ function makeMediaEmbed (url_) {
         hash:                                                     #hash
     */
 
-    switch(url.hostname) {
+    switch (url.hostname) {
         case "i.redd.it":
             return undefined;
         case "reddit.com":
@@ -61,7 +65,7 @@ function makeMediaEmbed (url_) {
 
 
 // TODO: Remove this
-function makeMediaEmbed_OLD (post) {
+function makeMediaEmbed_OLD(post) {
     try { // Then check for any kind of preview image
         let container = document.createElement("div");
         container.setAttribute("class", "post-preview-container-imgs");
