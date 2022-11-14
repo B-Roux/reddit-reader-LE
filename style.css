@@ -1,48 +1,87 @@
 :root {
-    /* Background/Foreground Colors */
-    --gruvbox-light0: #fbf1c7;
-    --gruvbox-light1: #ebdbb2;
-    --gruvbox-light2: #d5c4a1;
-    --gruvbox-light3: #bdae93;
-    --gruvbox-light4: #a89984;
-    --gruvbox-dark0: #282828;
-    --gruvbox-dark1: #3c3836;
-    --gruvbox-dark2: #504945;
-    --gruvbox-dark3: #665c54;
-    --gruvbox-dark4: #7c6f64;
-    /* Basic Colors */
-    --gruvbox-red: #cc241d;
-    --gruvbox-green: #98971a;
-    --gruvbox-yellow: #d79921;
-    --gruvbox-blue: #458588;
-    --gruvbox-purple: #b16286;
-    --gruvbox-aqua: #689d6a;
-    --gruvbox-gray: #928374;
-    --gruvbox-orange: #d65d0e;
-    /* Brighter/Washed Out Variants */
-    --gruvbox-red-bright: #fb4934;
-    --gruvbox-green-bright: #b8bb26;
-    --gruvbox-yellow-bright: #fabd2f;
-    --gruvbox-blue-bright: #83a598;
-    --gruvbox-purple-bright: #d3869b;
-    --gruvbox-aqua-bright: #8ec07c;
-    --gruvbox-gray-bright: #a89984;
-    --gruvbox-orange-bright: #fe8019;
-    /* Defaults (Dark Mode) */
-    --gruvbox-foreground0: var(--gruvbox-light0);
-    --gruvbox-foreground1: var(--gruvbox-light1);
-    --gruvbox-foreground2: var(--gruvbox-light2);
-    --gruvbox-foreground3: var(--gruvbox-light3);
-    --gruvbox-foreground4: var(--gruvbox-light4);
-    --gruvbox-background0: var(--gruvbox-dark0);
-    --gruvbox-background1: var(--gruvbox-dark1);
-    --gruvbox-background2: var(--gruvbox-dark2);
-    --gruvbox-background3: var(--gruvbox-dark3);
-    --gruvbox-background4: var(--gruvbox-dark4);
-    /*
-     * From https://github.com/morhetz/gruvbox
+    
+    /* From https://github.com/morhetz/gruvbox
      * (MIT/X11 License)
      */
+
+    /* Background/Foreground Colors */
+    --gruvbox-light-0: #fbf1c7;
+    --gruvbox-light-1: #ebdbb2;
+    --gruvbox-light-2: #d5c4a1;
+    --gruvbox-light-3: #bdae93;
+    --gruvbox-light-4: #a89984;
+
+    --gruvbox-dark-0:  #282828;
+    --gruvbox-dark-1:  #3c3836;
+    --gruvbox-dark-2:  #504945;
+    --gruvbox-dark-3:  #665c54;
+    --gruvbox-dark-4:  #7c6f64;
+
+    /* Basic Colors */
+    --gruvbox-dark-red:    #cc241d;
+    --gruvbox-dark-green:  #98971a;
+    --gruvbox-dark-yellow: #d79921;
+    --gruvbox-dark-blue:   #458588;
+    --gruvbox-dark-purple: #b16286;
+    --gruvbox-dark-aqua:   #689d6a;
+    --gruvbox-dark-gray:   #a89984;
+    --gruvbox-dark-orange: #d65d0e;
+
+    --gruvbox-light-red:     #cc241d;
+    --gruvbox-light-green:   #98971a;
+    --gruvbox-light-yellow:  #d79921;
+    --gruvbox-light-blue:    #458588;
+    --gruvbox-light-purple:  #b16286;
+    --gruvbox-light-aqua:    #689d6a;
+    --gruvbox-light-gray:    #7c6f64;
+    --gruvbox-light-orange:  #d65d0e;
+
+    /* Alternate Variants */
+    --gruvbox-dark-red-alt:    #fb4934;
+    --gruvbox-dark-green-alt:  #b8bb26;
+    --gruvbox-dark-yellow-alt: #fabd2f;
+    --gruvbox-dark-blue-alt:   #83a598;
+    --gruvbox-dark-purple-alt: #d3869b;
+    --gruvbox-dark-aqua-alt:   #8ec07c;
+    --gruvbox-dark-gray-alt:   #928374;
+    --gruvbox-dark-orange-alt: #fe8019;
+
+    --gruvbox-light-red-alt:    #9d0006;
+    --gruvbox-light-green-alt:  #79740e;
+    --gruvbox-light-yellow-alt: #b57614;
+    --gruvbox-light-blue-alt:   #076678;
+    --gruvbox-light-purple-alt: #8f3f71;
+    --gruvbox-light-aqua-alt:   #427b58;
+    --gruvbox-light-gray-alt:   #928374;
+    --gruvbox-light-orange-alt: #af3a03;
+
+    /* Defaults (Dark Mode) */
+    --gruvbox-foreground-0: var(--gruvbox-light-0);
+    --gruvbox-foreground-1: var(--gruvbox-light-1);
+    --gruvbox-foreground-2: var(--gruvbox-light-2);
+    --gruvbox-foreground-3: var(--gruvbox-light-3);
+    --gruvbox-foreground-4: var(--gruvbox-light-4);
+    --gruvbox-background-0: var(--gruvbox-dark-0);
+    --gruvbox-background-1: var(--gruvbox-dark-1);
+    --gruvbox-background-2: var(--gruvbox-dark-2);
+    --gruvbox-background-3: var(--gruvbox-dark-3);
+    --gruvbox-background-4: var(--gruvbox-dark-4);
+    --gruvbox-red:          var(--gruvbox-dark-red);
+    --gruvbox-green:        var(--gruvbox-dark-green);
+    --gruvbox-yellow:       var(--gruvbox-dark-yellow);
+    --gruvbox-blue:         var(--gruvbox-dark-blue);
+    --gruvbox-purple:       var(--gruvbox-dark-purple);
+    --gruvbox-aqua:         var(--gruvbox-dark-aqua);
+    --gruvbox-gray:         var(--gruvbox-dark-gray);
+    --gruvbox-orange:       var(--gruvbox-dark-orange);
+    --gruvbox-red-alt:      var(--gruvbox-dark-red-alt);
+    --gruvbox-green-alt:    var(--gruvbox-dark-green-alt);
+    --gruvbox-yellow-alt:   var(--gruvbox-dark-yellow-alt);
+    --gruvbox-blue-alt:     var(--gruvbox-dark-blue-alt);
+    --gruvbox-purple-alt:   var(--gruvbox-dark-purple-alt);
+    --gruvbox-aqua-alt:     var(--gruvbox-dark-aqua-alt);
+    --gruvbox-gray-alt:     var(--gruvbox-dark-gray-alt);
+    --gruvbox-orange-alt:   var(--gruvbox-dark-orange-alt);
 
     /* Whole site parameters */
     --border-radius: 2px;
@@ -59,16 +98,33 @@
 /* Light Mode Changes */
 @media (prefers-color-scheme: light) {
     :root {
-        --gruvbox-foreground0: var(--gruvbox-dark0) !important;
-        --gruvbox-foreground1: var(--gruvbox-dark1) !important;
-        --gruvbox-foreground2: var(--gruvbox-dark2) !important;
-        --gruvbox-foreground3: var(--gruvbox-dark3) !important;
-        --gruvbox-foreground4: var(--gruvbox-dark4) !important;
-        --gruvbox-background0: var(--gruvbox-light0) !important;
-        --gruvbox-background1: var(--gruvbox-light1) !important;
-        --gruvbox-background2: var(--gruvbox-light2) !important;
-        --gruvbox-background3: var(--gruvbox-light3) !important;
-        --gruvbox-background4: var(--gruvbox-light4) !important;
+        --gruvbox-foreground-0: var(--gruvbox-dark-0)           !important;
+        --gruvbox-foreground-1: var(--gruvbox-dark-1)           !important;
+        --gruvbox-foreground-2: var(--gruvbox-dark-2)           !important;
+        --gruvbox-foreground-3: var(--gruvbox-dark-3)           !important;
+        --gruvbox-foreground-4: var(--gruvbox-dark-4)           !important;
+        --gruvbox-background-0: var(--gruvbox-light-0)          !important;
+        --gruvbox-background-1: var(--gruvbox-light-1)          !important;
+        --gruvbox-background-2: var(--gruvbox-light-2)          !important;
+        --gruvbox-background-3: var(--gruvbox-light-3)          !important;
+        --gruvbox-background-4: var(--gruvbox-light-4)          !important;
+        --gruvbox-red:          var(--gruvbox-light-red)        !important;
+        --gruvbox-green:        var(--gruvbox-light-green)      !important;
+        --gruvbox-yellow:       var(--gruvbox-light-yellow)     !important;
+        --gruvbox-blue:         var(--gruvbox-light-blue)       !important;
+        --gruvbox-purple:       var(--gruvbox-light-purple)     !important;
+        --gruvbox-aqua:         var(--gruvbox-light-aqua)       !important;
+        --gruvbox-gray:         var(--gruvbox-light-gray)       !important;
+        --gruvbox-orange:       var(--gruvbox-light-orange)     !important;
+        --gruvbox-red-alt:      var(--gruvbox-light-red-alt)    !important;
+        --gruvbox-green-alt:    var(--gruvbox-light-green-alt)  !important;
+        --gruvbox-yellow-alt:   var(--gruvbox-light-yellow-alt) !important;
+        --gruvbox-blue-alt:     var(--gruvbox-light-blue-alt)   !important;
+        --gruvbox-purple-alt:   var(--gruvbox-light-purple-alt) !important;
+        --gruvbox-aqua-alt:     var(--gruvbox-light-aqua-alt)   !important;
+        --gruvbox-gray-alt:     var(--gruvbox-light-gray-alt)   !important;
+        --gruvbox-orange-alt:   var(--gruvbox-light-orange-alt) !important;
+
         --box-shadow: 0 0 10px -2px rgba(255, 255, 255, 0.8);
     }
 }
@@ -79,8 +135,8 @@ html {
 }
 
 body {
-    background-color: var(--gruvbox-background0);
-    color: var(--gruvbox-foreground1);
+    background-color: var(--gruvbox-background-0);
+    color: var(--gruvbox-foreground-1);
     text-align: center;
 }
 
@@ -95,16 +151,16 @@ label {
 input {
     display: inline;
     border-radius: 0;
-    border: var(--border-thickness) solid var(--gruvbox-foreground1);
-    background-color: var(--gruvbox-foreground1);
-    color: var(--gruvbox-background0);
+    border: var(--border-thickness) solid var(--gruvbox-foreground-1);
+    background-color: var(--gruvbox-foreground-1);
+    color: var(--gruvbox-background-0);
     font-family: var(--font-family);
     border-radius: var(--border-radius);
 }
 
 input[type="text"] {
-    background-color: var(--gruvbox-background1);
-    color: var(--gruvbox-foreground0);
+    background-color: var(--gruvbox-background-1);
+    color: var(--gruvbox-foreground-0);
     height: 1.1rem;
     box-sizing: content-box;
     padding: 0.1rem 0.25rem;
@@ -118,8 +174,8 @@ input[type="radio"] {
     height: 0.6em;
     width: 0.6em;
     border-radius: 100%;
-    border: var(--border-thickness) solid var(--gruvbox-foreground1);
-    background-color: var(--gruvbox-background0);
+    border: var(--border-thickness) solid var(--gruvbox-foreground-1);
+    background-color: var(--gruvbox-background-0);
     cursor: pointer;
     vertical-align: baseline;
     margin-right: 0.5em;
@@ -127,7 +183,7 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked {
-    background-color: var(--gruvbox-foreground1);
+    background-color: var(--gruvbox-foreground-1);
 }
 
 input[type="button"] {
@@ -171,7 +227,7 @@ input[type="button"].link-button.not-available:hover {
 
 a:hover,
 input[type="button"].link-button:hover {
-    color: var(--gruvbox-blue-bright);
+    color: var(--gruvbox-blue-alt);
     text-decoration: underline;
     outline: none;
 }
@@ -182,8 +238,8 @@ input[type="button"].link-button:focus {
 
 ::selection,
 ::-moz-selection {
-    color: var(--gruvbox-dark0);
-    background-color: var(--gruvbox-purple-bright);
+    color: var(--gruvbox-dark-0);
+    background-color: var(--gruvbox-purple-alt);
     border-radius: var(--border-radius);
 }
 
@@ -194,7 +250,7 @@ input[type="button"].link-button:focus {
     gap: 1rem;
     margin-top: 1rem;
     column-gap: 1rem;
-    border-bottom: var(--border-thickness) solid var(--gruvbox-background2);
+    border-bottom: var(--border-thickness) solid var(--gruvbox-background-2);
 }
 
 .post-container-left {
@@ -215,8 +271,8 @@ input[type="button"].link-button:focus {
 
 .post-thumb-box {
     box-sizing: border-box;
-    border: var(--border-thickness) solid var(--gruvbox-background1);
-    background-color: var(--gruvbox-background1);
+    border: var(--border-thickness) solid var(--gruvbox-background-1);
+    background-color: var(--gruvbox-background-1);
     border-radius: var(--border-radius);
     width: var(--thumb-size);
     overflow: hidden;
@@ -247,7 +303,7 @@ input[type="button"].link-button:focus {
 
 .post-no-thumbnail {
     border-radius: var(--border-radius);
-    background-color: var(--gruvbox-background1);
+    background-color: var(--gruvbox-background-1);
     height: 5rem;
     width: 100%;
 }
@@ -260,7 +316,7 @@ input[type="button"].link-button:focus {
 }
 
 .post-title:hover {
-    color: var(--gruvbox-orange-bright);
+    color: var(--gruvbox-orange-alt);
     text-decoration: underline;
 }
 
@@ -270,7 +326,7 @@ input[type="button"].link-button:focus {
 }
 
 .post-title.sticky-post:hover {
-    color: var(--gruvbox-green-bright);
+    color: var(--gruvbox-green-alt);
     text-decoration: underline;
 }
 
@@ -286,7 +342,7 @@ input[type="button"].link-button:focus {
 }
 
 .post-nsfw-tag:hover {
-    color: var(--gruvbox-red-bright);
+    color: var(--gruvbox-red-alt);
 }
 
 .post-nsfw-tag:hover::after {
@@ -301,7 +357,7 @@ input[type="button"].link-button:focus {
 }
 
 .post-spoiler-tag:hover {
-    color: var(--gruvbox-aqua-bright);
+    color: var(--gruvbox-aqua-alt);
 }
 
 .post-spoiler-tag:hover::after {
@@ -321,9 +377,9 @@ input[type="button"].link-button:focus {
     box-sizing: border-box;
     width: 100%;
     height: fit-content;
-    border: var(--border-thickness) solid var(--gruvbox-background1);
+    border: var(--border-thickness) solid var(--gruvbox-background-1);
     border-radius: var(--border-radius);
-    background-color: var(--gruvbox-background1);
+    background-color: var(--gruvbox-background-1);
     margin-bottom: 1rem;
     box-shadow: var(--box-shadow);
 }
@@ -387,7 +443,7 @@ input[type="button"].link-button:focus {
     box-sizing: border-box;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    border: var(--border-thickness) solid var(--gruvbox-foreground1);
+    border: var(--border-thickness) solid var(--gruvbox-foreground-1);
     height: calc(100% - 0.5rem - 0.5px); /* Account for bottom margin */
     width: auto;
     image-rendering: optimizeQuality;
@@ -422,7 +478,7 @@ button.toggle-thread-view {
 }
 
 .comment-container {
-    border-left: var(--border-thickness) solid var(--gruvbox-background3);
+    border-left: var(--border-thickness) solid var(--gruvbox-background-3);
     margin: 0.75rem 0;
     padding: 0 1rem;
 }
@@ -475,7 +531,7 @@ button.toggle-thread-view {
 
 #navigator {
     text-align: center;
-    border-bottom: var(--border-thickness) solid var(--gruvbox-background2);
+    border-bottom: var(--border-thickness) solid var(--gruvbox-background-2);
     padding: 0.25rem 0 1rem 0;
     margin-bottom: 1rem;
     font-size: 0.9rem;
@@ -512,7 +568,7 @@ button.toggle-thread-view {
 }
 
 #quick-links-body a {
-    color: var(--gruvbox-foreground4);
+    color: var(--gruvbox-foreground-4);
 }
 
 #quick-links-note {
@@ -539,11 +595,11 @@ button.toggle-thread-view {
     font-family: serif;
     font-size: 1.2rem;
     padding: 1rem;
-    color: var(--gruvbox-background1);
+    color: var(--gruvbox-background-1);
 }
 
 #pi-easter-egg:hover {
-    color: var(--gruvbox-blue-bright);
+    color: var(--gruvbox-blue-alt);
 }
 
 #pi-easter-egg:hover::before {
@@ -598,13 +654,13 @@ button.toggle-thread-view {
 
 .md hr {
     height: var(--border-thickness);
-    background-color: var(--gruvbox-foreground1);
+    background-color: var(--gruvbox-foreground-1);
     border: none;
 }
 
 .md table {
     border-collapse: collapse;
-    border: var(--border-thickness) solid var(--gruvbox-foreground1);
+    border: var(--border-thickness) solid var(--gruvbox-foreground-1);
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
@@ -612,12 +668,12 @@ button.toggle-thread-view {
 .md td,
 .md th {
     padding: 0.2em 0.5em;
-    border-right: var(--border-thickness) solid var(--gruvbox-foreground1);
-    border-bottom: var(--border-thickness) dotted var(--gruvbox-foreground1);
+    border-right: var(--border-thickness) solid var(--gruvbox-foreground-1);
+    border-bottom: var(--border-thickness) dotted var(--gruvbox-foreground-1);
 }
 
 .md th {
-    border-bottom: var(--border-thickness) solid var(--gruvbox-foreground1);
+    border-bottom: var(--border-thickness) solid var(--gruvbox-foreground-1);
 }
 
 .md code, .md pre {
@@ -628,7 +684,7 @@ button.toggle-thread-view {
 
 .md blockquote {
     display: block;
-    border-left: var(--border-thickness) solid var(--gruvbox-foreground1);
+    border-left: var(--border-thickness) solid var(--gruvbox-foreground-1);
     padding-left: 1rem;
     margin-left: 0rem;
     font-style: italic;
@@ -642,7 +698,7 @@ button.toggle-thread-view {
 .md img {
     display: block;
     box-shadow: var(--box-shadow);
-    border: var(--border-thickness) solid var(--gruvbox-foreground1);
+    border: var(--border-thickness) solid var(--gruvbox-foreground-1);
     border-radius: var(--border-radius);
     height: 5rem;
     width: auto;
