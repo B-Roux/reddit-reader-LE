@@ -436,17 +436,12 @@ input[type="button"].link-button:focus {
 
 .post-preview-container-imgs {
     box-sizing: border-box;
-    max-height: 75vh;
     width: 100%;
-    height: fit-content;
+    height: 75vh;
     resize: vertical;
     overflow: auto;
     text-align: center;
     padding: 0.5rem 0.5rem 0 0.5rem;
-}
-
-.post-preview-container-imgs[style*="height"] {
-    max-height: unset; 
 }
 
 .post-preview-container-imgs img {
@@ -456,7 +451,7 @@ input[type="button"].link-button:focus {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     border: var(--border-thickness) solid var(--gruvbox-foreground-1);
-    max-height: calc(100% - 0.501rem);
+    max-height: calc(100% - 0.5001rem);
     max-width: 100%;
     height: auto;
     width: auto;
