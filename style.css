@@ -265,7 +265,6 @@ input[type="button"].link-button:focus {
 .post-container-left {
     grid-row: 1;
     grid-column: 1;
-    user-select: none;
 }
 
 .post-container-right {
@@ -437,13 +436,17 @@ input[type="button"].link-button:focus {
 
 .post-preview-container-imgs {
     box-sizing: border-box;
+    max-height: 75vh;
     width: 100%;
-    max-width: 100%;
-    height: 75vh;
+    height: fit-content;
     resize: vertical;
     overflow: auto;
     text-align: center;
     padding: 0.5rem 0.5rem 0 0.5rem;
+}
+
+.post-preview-container-imgs[style*="height"] {
+    max-height: unset; 
 }
 
 .post-preview-container-imgs img {
@@ -453,10 +456,18 @@ input[type="button"].link-button:focus {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     border: var(--border-thickness) solid var(--gruvbox-foreground-1);
-    height: calc(100% - 0.5rem - 0.5px); /* Account for bottom margin */
+    max-height: calc(100% - 0.501rem);
+    max-width: 100%;
+    height: auto;
     width: auto;
-    image-rendering: optimizeQuality;
     cursor: zoom-in;
+}
+
+.post-preview-container-imgs img[data-fit="horizontal"] {
+    width: 100%;
+    height: auto;
+    max-height: unset;
+    cursor: zoom-out;
 }
 
 .post-comments-container {
@@ -711,6 +722,6 @@ button.toggle-thread-view {
     box-shadow: var(--box-shadow);
     border: var(--border-thickness) solid var(--gruvbox-foreground-1);
     border-radius: var(--border-radius);
-    height: 5rem;
+    height: 7.5rem;
     width: auto;
 }

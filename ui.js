@@ -405,14 +405,8 @@ function navigateToQueriedPage() {
 // Toggle an image's fit (horizontally vs. vertically)
 function toggleFit(source) {
     if (source.dataset.fit == "vertical") {
-        source.style.width = "100%";
-        source.style.height = "auto";
         source.dataset.fit = "horizontal";
-        source.style.cursor = "zoom-out";
     } else {
-        source.style.width = "";
-        source.style.height = "";
-        source.style.cursor = "";
         source.dataset.fit = "vertical";
     }
 }
