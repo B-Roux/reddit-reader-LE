@@ -1,6 +1,7 @@
 :root {
     
-    /* From https://github.com/morhetz/gruvbox
+    /* 
+     * From https://github.com/morhetz/gruvbox
      * (MIT/X11 License)
      */
 
@@ -90,8 +91,11 @@
     --box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.3);
 
     /* Defaults */
-    --font-family: sans-serif;
-    font-family: var(--font-family);
+    --sans-font-family: 'Oxygen', sans-serif;
+    --mono-font-family: 'Oxygen Mono', monospace;
+    /*--serif-font-family: serif;*/
+
+    font-family: var(--sans-font-family);
     font-size: 12pt;
 }
 
@@ -125,8 +129,12 @@
         --gruvbox-gray-alt:     var(--gruvbox-light-gray-alt)   !important;
         --gruvbox-orange-alt:   var(--gruvbox-light-orange-alt) !important;
 
-        --box-shadow: 0 0 10px -2px rgba(255, 255, 255, 0.8);
+        --box-shadow: 0 0 10px -2px rgba(255, 255, 255, 0.7);
     }
+}
+
+* {
+    text-rendering: geometricPrecision;
 }
 
 html {
@@ -154,7 +162,7 @@ input {
     border: var(--border-thickness) solid var(--gruvbox-foreground-1);
     background-color: var(--gruvbox-foreground-1);
     color: var(--gruvbox-background-0);
-    font-family: var(--font-family);
+    font-family: var(--sans-font-family);
     border-radius: var(--border-radius);
 }
 
@@ -517,6 +525,7 @@ button.toggle-thread-view {
     vertical-align: top;
     content: "\2020";
     color: var(--gruvbox-red);
+    cursor: help;
 }
 
 #main-page {
@@ -574,6 +583,7 @@ button.toggle-thread-view {
 #quick-links-note {
     margin-top: 0.5em;
     color: var(--gruvbox-red);
+    cursor: help;
 }
 
 #quick-links-note::before {
@@ -592,7 +602,7 @@ button.toggle-thread-view {
 
 #pi-easter-egg,
 #pi-easter-egg:visited {
-    font-family: serif;
+    font-family: 'Times New Roman', Times, serif;
     font-size: 1.2rem;
     padding: 1rem;
     color: var(--gruvbox-background-1);
@@ -603,7 +613,7 @@ button.toggle-thread-view {
 }
 
 #pi-easter-egg:hover::before {
-    font-family: var(--font-family);
+    font-family: var(--sans-font-family);
     font-size: 0.75rem;
     content: "https://www.youtube.com/watch?v=dQw4w9WgXcQ ";
 }
@@ -678,7 +688,7 @@ button.toggle-thread-view {
 
 .md code, .md pre {
     color: var(--gruvbox-green);
-    font-family: monospace;
+    font-family: var(--mono-font-family);
     white-space: pre-wrap;
 }
 

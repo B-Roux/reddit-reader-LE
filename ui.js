@@ -166,7 +166,7 @@ function makePostNode(post) {
     }
     right.appendChild(byline);
 
-    let mediaContent = getMediaContent(post); // ./embedder.js
+    let mediaContent = getMediaContent(post); // embedder.js
 
     let togglePreview = document.createElement("input");
     togglePreview.setAttribute("value", "preview");

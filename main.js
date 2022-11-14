@@ -16,11 +16,11 @@ const thisAfter = URLParams.has("after") ? URLParams.get("after") : null;
 // Main - to be run after the DOM is fully loaded
 window.addEventListener('DOMContentLoaded', (_) => {
     // Load the requested information
-    let url = makeSubredditJsonURL(
+    let url = makeSubredditJsonURL( // utils.js
         thisSubreddit,
         thisSort,
         thisTime,
         thisAfter
     );
-    makeSubredditPage(url, document.querySelector("#generator-destination"));
+    makeSubredditPage(url, document.querySelector("#generator-destination")); //ui.js
 });

@@ -5,6 +5,12 @@
     <meta charset="utf-8">
     <title>b-roux's reddit reader</title>
     <link href="style.css" rel="stylesheet">
+
+    <!-- Font imports, all licensed under OFL -->
+    <!-- TODO: Self host this so that users won't need to connect to google's APIs -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oxygen+Mono&family=Oxygen:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -12,30 +18,30 @@
         <div id="navigator">
             <form>
                 <label>
-                    <span id="subreddit-label">r/<span><input type="text" id="subreddit-name" onchange="changeSubreddit(value)" 
-                    value="all" autocomplete="off">
+                    <span id="subreddit-label">r/<span><input type="text" id="subreddit-name"
+                                onchange="changeSubreddit(value)" value="all" autocomplete="off">
                 </label>
 
                 <span>
                     <label>
-                        hot<input type="radio" class="sort-selector" name="sort-selector" 
-                        value="hot" onchange="changeSort(value)" autocomplete="off" checked>
+                        hot<input type="radio" class="sort-selector" name="sort-selector" value="hot"
+                            onchange="changeSort(value)" autocomplete="off" checked>
                     </label>
                     <label>
-                        new<input type="radio" class="sort-selector" name="sort-selector" 
-                        value="new" onchange="changeSort(value)" autocomplete="off">
+                        new<input type="radio" class="sort-selector" name="sort-selector" value="new"
+                            onchange="changeSort(value)" autocomplete="off">
                     </label>
                     <label>
-                        rising<input type="radio" class="sort-selector" name="sort-selector" 
-                        value="rising" onchange="changeSort(value)" autocomplete="off">
+                        rising<input type="radio" class="sort-selector" name="sort-selector" value="rising"
+                            onchange="changeSort(value)" autocomplete="off">
                     </label>
                     <label>
-                        controversial<input type="radio" class="sort-selector" name="sort-selector" 
-                        value="controversial" onchange="changeSort(value)" autocomplete="off">
+                        controversial<input type="radio" class="sort-selector" name="sort-selector"
+                            value="controversial" onchange="changeSort(value)" autocomplete="off">
                     </label>
                     <label>
-                        top<input type="radio" class="sort-selector" name="sort-selector" 
-                        value="top" onchange="changeSort(value)" autocomplete="off">
+                        top<input type="radio" class="sort-selector" name="sort-selector" value="top"
+                            onchange="changeSort(value)" autocomplete="off">
                     </label>
                 </span>
 
@@ -44,28 +50,28 @@
                 <span id="time-selector-group" style="display: none;">
                     <br>
                     <label>
-                        all time<input type="radio" class="time-selector" name="time-selector" 
-                        value="all" onchange="changeTime(value)" autocomplete="off" checked>
+                        all time<input type="radio" class="time-selector" name="time-selector" value="all"
+                            onchange="changeTime(value)" autocomplete="off" checked>
                     </label>
                     <label>
-                        hour<input type="radio" class="time-selector" name="time-selector" 
-                        value="hour" onchange="changeTime(value)" autocomplete="off">
+                        hour<input type="radio" class="time-selector" name="time-selector" value="hour"
+                            onchange="changeTime(value)" autocomplete="off">
                     </label>
                     <label>
-                        day<input type="radio" class="time-selector" name="time-selector" 
-                        value="day" onchange="changeTime(value)" autocomplete="off">
+                        day<input type="radio" class="time-selector" name="time-selector" value="day"
+                            onchange="changeTime(value)" autocomplete="off">
                     </label>
                     <label>
-                        week<input type="radio" class="time-selector" name="time-selector" 
-                        value="week" onchange="changeTime(value)" autocomplete="off">
+                        week<input type="radio" class="time-selector" name="time-selector" value="week"
+                            onchange="changeTime(value)" autocomplete="off">
                     </label>
                     <label>
-                        month<input type="radio" class="time-selector" name="time-selector" 
-                        value="month" onchange="changeTime(value)" autocomplete="off">
+                        month<input type="radio" class="time-selector" name="time-selector" value="month"
+                            onchange="changeTime(value)" autocomplete="off">
                     </label>
                     <label>
-                        year<input type="radio" class="time-selector" name="time-selector" 
-                        value="year" onchange="changeTime(value)" autocomplete="off">
+                        year<input type="radio" class="time-selector" name="time-selector" value="year"
+                            onchange="changeTime(value)" autocomplete="off">
                     </label>
                 </span>
 
@@ -76,19 +82,22 @@
             <div id="quick-links-body">
                 <a href="https://github.com/B-Roux/reddit-reader" target="_blank">snoop around my code</a>
                 <br>
-                <a href="https://github.com/B-Roux/reddit-reader/issues" target="_blank">report bugs or request features</a>
+                <a href="https://github.com/B-Roux/reddit-reader/issues" target="_blank">report bugs or request
+                    features</a>
                 <br>
-                <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages" target="_blank" class="not-affiliated">about GitHub pages</a>
+                <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages"
+                    target="_blank" class="not-affiliated">about GitHub pages</a>
                 <br>
-                <a href="https://github.com/morhetz/gruvbox" target="_blank" class="not-affiliated">Pavel Pertsev's Gruvbox Theme</a>
+                <a href="https://github.com/morhetz/gruvbox" target="_blank" class="not-affiliated">Pavel Pertsev's
+                    Gruvbox Theme</a>
+                    <br>
+                <a href="https://fonts.google.com/specimen/Oxygen" target="_blank" class="not-affiliated">Vernon Adams's Oxygen font</a>
             </div>
             <div id="quick-links-note">I am not affiliated with these entities</div>
         </div>
     </div>
     <div id="pi-easter-egg-cont">
-        <a id="pi-easter-egg" 
-            href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" 
-            target="_blank">&pi;</a>
+        <a id="pi-easter-egg" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">&pi;</a>
     </div>
     <script type="text/javascript" src="main.js"></script>
     <script type="text/javascript" src="utils.js"></script>
